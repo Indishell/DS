@@ -1,0 +1,41 @@
+int maxNodeLevel(Node *root)
+{
+ // Add your code here
+    if(root == NULL)
+        return 0;
+        
+    queue<Node*> mq;
+    mq.push(root);
+    
+    int maxM = INT_MIN;
+    int level = 0;
+    int i = 0;
+    
+    
+    while(!mq.empty())
+    {
+        int k = mq.size();
+        if(maxM < k)
+        {
+            maxM = k;
+            level = i;
+        }
+        
+        
+        while(k--)
+        {
+            Node* temp = mq.front();
+            mq.pop();
+            
+            if(temp->left)
+            mq.push(temp->left);
+            
+            if(temp->left)
+            mq.push(temp->left);
+        }
+        i++;
+                
+    }
+    
+    return level;
+}
