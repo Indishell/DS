@@ -1,0 +1,105 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+        int data;
+        Node *next;
+};
+
+void _delNodes(Node* head);
+void reverseL(Node** head);
+
+void push(Node** head, int  new_data)
+{
+    Node* new_node = new Node;
+    new_node->data = new_data;
+    
+    new_node->next = *head;
+    *head = new_node;
+}
+
+void printList(Node* head)
+{
+    Node* temp = head;
+    
+    while(temp!= NULL)
+    {
+        cout<<temp->data<<" ";
+        temp = temp->next;
+    }
+}
+
+void reverseL(Node** head)
+{
+    Node* curr = *head;
+    Node* next_next;
+    Node* prev = NULL;
+    
+    while(curr != NULL)
+    {
+        next_next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        
+        curr = next_next;
+    }
+    
+    *head = prev;
+}
+
+void _delNodes(Node* head)
+{
+    Node* max_node= head;
+    Node* curr = head;
+    Node* temp;
+    
+    
+    while(curr!= NULL && curr->next != NULL)
+    {
+        if(max_node->data > curr->next->data)
+        {
+            temp = curr->next;
+            
+            curr->next = temp->next;
+            free(temp);
+
+        }
+        else
+        {
+            curr = curr->next;
+            max_node = curr;
+        }
+    }
+    
+}
+
+void delNodes(Node** head)
+{
+    reverseL(head);
+    
+    _delNodes(*head);
+    
+    reverseL(head);
+}
+
+int main() 
+{
+    Node* head = NULL;
+    
+    push(&head, 3); 
+    push(&head, 2); 
+    push(&head, 6); 
+    push(&head, 5); 
+    push(&head, 11); 
+    push(&head, 10); 
+    push(&head, 15); 
+    push(&head, 12);
+    
+    
+    delNodes(&head);
+    printList(head);
+    
+    return 0; 
+} 
