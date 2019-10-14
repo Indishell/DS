@@ -1,0 +1,31 @@
+1. O(n^2) Solution.
+
+int isSubsetSum(int set[], int n, int sum)
+{
+    if(sum == 0)
+        return true;
+    
+    if(n == 0 && sum != 0)
+        return false;
+    
+    int count = 0;
+    
+    for(int i = 0; i < n; i++)
+    {
+      for(int j = 0 ; j < n; j++)
+      {
+            if(sum - set[i] == set[j])
+            {
+                cout<<"Pair is ("<<set[i]<<" , "<<set[j]<<")"<<endl;
+                count++;
+            }
+                
+        }
+      
+     
+    }
+    
+    cout<<"Total Unique Pairs are pair: "<<count/2<<endl;
+
+}
+
