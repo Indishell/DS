@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+        int data;
+        Node *left, *right;
+};
+
+Node* newNode(int item)
+{
+    Node* new_node = new Node;
+    new_node->data = item;
+    new_node->left = new_node->right = NULL;
+    return new_node;
+}
+
+void _verticallPrint(Node* root,int hd ,map<int, vector<int>> &vertical)
+{
+    if(!root)
+        return;
+        
+    vertical[hd].push_back(root->data);
+    
+    _verticallPrint(root->left, hd - 1, vertical);
+    _verticallPrint(root->right, hd + 1, vertical);
+}
+
+
+void verticalPrint(Node* root)
+{
+    
+    map<int, vector<int> > vertical;
+    _verticallPrint(root, 0, vertical);
+    
+    
+    for(auto it = vertical.begin(); it != vertical.end(); ++it)
+    {
+        for(auto itr = it->second.begin(); itr != it->second.end(); itr++)
+            cout<< *itr <<" ";
+    cout<< "\n";
+    
+    }
+
+}
+
+
+int main()
+{
+   Node *root = newNode(1); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(4); 
+    root->left->right = newNode(5); 
+    root->right->left = newNode(6); 
+    root->right->right = newNode(7); 
+    root->right->left->right = newNode(8); 
+    root->right->right->right = newNode(9);  
+    
+    verticalPrint(root);
+    return 0;
+}
