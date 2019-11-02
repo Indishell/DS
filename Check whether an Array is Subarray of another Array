@@ -1,0 +1,38 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+bool isSubArray(int A[], int B[], int m, int n)
+{
+    //If A[] length is less than B[] length, not possible
+ 
+    if(n > m)
+        return false;
+    int count = 0;
+    
+    //Inserting elements in set
+    unordered_set<int> mp;    
+    for(int i = 0; i < m; i++)
+        mp.insert(A[i]);
+        
+    //Check if element of B[] is present or not, if present increment counter variable    
+    for(int i = 0; i < n; i++)
+        if(mp.find(B[i]) != mp.end())
+            count++;
+            
+    //It means that all the elements of B[] is found at A[] and it is a  subarray of A[]
+    if(count == n)
+        return true;
+        
+    else
+        return false;
+
+
+  
+    //int A[] = {1, 2, 3, 4, 5};
+    //int B[] = {0};
+
+}
+
+
+TC : O(n) => where n is number of elements in the array
+SC: O(n) => as we used auxiliary space for our set.
