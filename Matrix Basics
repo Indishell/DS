@@ -2,16 +2,35 @@ Maximum Number of 1s in a Row.
 =================
 int maxOne(int mat[R][C], int m, int n)
 {
-    
-    int count; int maxM =  INT_MIN;
+    // Initial Index of row is -1. 
+    int count; int row = -1;  int maxM =  INT_MIN;
     for(int i = 0; i < R; i++)
     {
+        //after a complete loop of j, the value of count is again set to zero and updated in the maxM variable to check for the count of 1s in the next row
         count = 0;
         for(int j = 0; j < C; j++)
         {   
-            if(mat[i][j] == 1) count++;
+            
+            if(mat[i][j] == 1) 
+                count++;
         }   
-        maxM = max(maxM, count); }    
-    return maxM; }
+        
+        if(maxM < count)
+        {
+            maxM = count;
+            row = i;
+            // Get the index of row with maximum 1s
+        }
+        
+    }   
+    if(row > 0)
+        return row; 
+        
+    else
+        return -1;
+    // Return -1 if there is no 1s in any row, so we return the initial index alloted to row
+}
+Time Complexity : O(R*C)
+Space Complexity : O(1)
 
 =================
