@@ -1,47 +1,36 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
-int getCount(int *check, int n)
+bool compare(pair<int, int> &p1, pair<int, int> &p2)
 {
-    int count = 0;
+    if(p1.second == p2.second)
+        return p1.first < p2.first;
+        
+    return p1.second > p2.second;
+}
+
+void printSorted(int arr[], int n)
+{
+    unordered_map<int, int> mp;
     
-    for(int i = 0; i<n;i++)
+    for(int i = 0;i < n; i++)
+        mp[arr[i]]++;
+        
+    int size = mp.size();
+    pair<int, int> P[size];
+    int j = 0;
+    for(auto it = mp.begin(); it != mp.end(); it++)
+        P[j++] = make_pair(it->first, it->second);
+
+    sort(P, P + size, compare);
+    
+    
+    for(int i =0 ; i < size; i++)
     {
-        if(check[i] == check[i + 1])
-            count++;
+        int freq = P[i].second;
+        
+        while(freq--)
+            cout<<P[i].first<<" ";
     }
-    
-    return count;
 }
 
-
-void sortElementsByFreq(int arr[], int n)
-{
-    vector<pair<int, int> > vp;
-    
-    
-    for(int i =0; i < n; i++)
-        vp.push_back(make_pair(getCount(arr[i], n), arr[i]) );
-        
-        
-        
-    sort(vp.begin(), vp.end(), getCount);
-    
-    
-    
-    for(int i = 0; i < vp.size(); i++)
-        cout<<vp[i].second<<" ";
-}
-
-
-int main()
-{
-    int arr[] = {2, 5, 2, 8, 5, 6, 8, 8};
-    int n = sizeof(arr)/sizeof(arr[0]);
-    
-    
-    sortElementsByFreq(arr, n);
-    return 0;
-    
-}
