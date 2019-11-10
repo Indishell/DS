@@ -1,6 +1,6 @@
 1. Brute-Force Approach
+//Time Complexity : O(N square)
 
-Time Complexity : O(N square)
 void search(int mat[4][4],int n, int x)
 {
     bool flag = false;
@@ -25,4 +25,37 @@ void search(int mat[4][4],int n, int x)
         
     else
         cout<<"Element Not Found "<<endl;
+}
+
+
+2. Efficient Solution 
+//Time Complexity: O(n) -> 
+//O(n) If matrix is of order n*n
+//O(m + n) If matrix is of order m*n
+
+int search(int mat[4][4], int n, int x)
+{
+    if(n == 0)
+        return -1; 
+    int small = mat[0][0], large = mat[n - 1][n - 1];
+    if(x > large || x < small)
+        return -1;
+        
+    int i = 0, j = n - 1;
+    while(i < n && j >= 0)
+    {
+        if(mat[i][j] == x)
+        {
+            cout<<"Element found at ("<<i<<","<<j<<")"<<endl;
+            return 
+        }   
+        else if(mat[i][j] > x)
+            j--;
+            
+        else
+            i++;
+    }
+    cout<<"Element Not found ";
+    return 0;
+    
 }
