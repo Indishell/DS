@@ -1,0 +1,45 @@
+void deleteLast(Node** head, int key)
+{
+    if(*head == NULL)
+        return ;
+
+    reverse(head);
+    
+    if((*head)->data == key)
+    {
+        Node* curr = *head;
+        *head = curr->next;
+        
+        free(curr);
+        return;
+    }
+    
+    Node* temp = *head;
+    while(temp != NULL && temp->next->data != key)
+        temp = temp->next;
+    
+  
+    temp->next = temp->next->next;
+    
+}
+int main()
+{
+
+Node* head = NULL;
+// 8->2->3->1->7
+// 1 2 3 5 2 10
+
+push(&head, 5);
+push(&head, 10);
+push(&head, 2);
+push(&head, 5);
+push(&head, 3);
+push(&head, 2);
+push(&head, 1);
+
+deletelast(&head, 2);
+reverse(&head);
+
+
+cout<< "Linked List : " <<endl; 
+printlist(head);
