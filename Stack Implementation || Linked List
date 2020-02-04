@@ -1,0 +1,76 @@
+
+class StackNode
+{
+    public:
+        int data;
+        StackNode* next;
+};
+
+StackNode* newNode(int item)
+{
+    StackNode* temp  = new StackNode;
+    temp->data = item;
+    temp->next = NULL;
+    
+    return temp;
+}
+
+void push(StackNode** root, int item)
+{
+    
+    StackNode* temp = new StackNode;
+    temp->data = item;
+    
+    temp->next = *root;
+    
+    *root = temp;
+}
+bool isEmpty(StackNode* root)
+{
+    return (root == NULL);
+}
+
+int pop(StackNode** root)
+{
+    
+    if(isEmpty(*root))
+        return INT_MAX;
+        
+    
+    
+    StackNode* temp = *root;
+    *root = (*root)->next;
+    
+    int popped_item =  temp->data;
+    
+    delete temp;
+    
+    return popped_item;
+    
+}
+
+
+int  peek(StackNode* root)
+{
+    if(isEmpty(root))
+        return INT_MIN;
+        
+    return root->data;
+}
+
+
+int main()
+{
+    StackNode* mystack = NULL;
+    
+   
+    
+    cout << pop(&mystack) << " popped from stack\n"; 
+  
+
+    if(isEmpty(mystack))
+        cout<<"True"<<endl;
+        
+    else
+        cout<<"False"<<endl;
+}
