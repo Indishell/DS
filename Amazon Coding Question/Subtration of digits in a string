@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+#include<stdio.h>
+using namespace std;
+
+bool isDigit(char p)
+{
+    if(p >= 48 && p <= 58)
+        return true;
+    return false;
+    
+}
+
+int reverseInt(int n)
+{
+    int rev = 0;
+    int rem = 0;
+    // 72
+    while(n > 0)
+    {
+        rem = n%10; //2 
+        rev = rev*10 + rem; // rev = 0 + 2 => 2
+        
+        n = n/10;
+    }
+    
+    return rev;
+}
+
+
+int myaToi(string str)
+{
+    int res = 0;
+    for(int i = 0; i < str.size(); i++)
+    {
+        if(isDigit(str[i]))
+            res = res*10 + str[i] - '0';
+            
+        else
+            break;
+    }
+    return res;
+}
+
+int main()
+{
+    string str = "25 + X = 21";
+    cout<< myaToi(str);
+    
+    int x = myaToi(str);
+    reverse(str.begin(), str.end());
+    
+    int y = myaToi(str);
+    int rev_y = reverseInt(y);
+    
+    
+    cout<<"Minus of two numbers are : " << rev_y - x;
+    return 0;
+}
