@@ -1,7 +1,15 @@
+Q. The Question is Evalutate String "5 + X = 7"
+// Output is 2
+// X = 7 - 5 => 2
+// X = 2
+
 #include<bits/stdc++.h>
 #include<stdio.h>
 using namespace std;
 
+//Checking if a particular character is a digit or not by checking with the ascii values
+// Ascii value of 0 is 48 and 10 is 58
+// For a character to be a digit the ascii value must be between 48 and 58.
 bool isDigit(char p)
 {
     if(p >= 48 && p <= 58)
@@ -26,7 +34,7 @@ int reverseInt(int n)
     return rev;
 }
 
-
+//My own atoi function which checks for the s
 int myaToi(string str)
 {
     int res = 0;
@@ -34,7 +42,7 @@ int myaToi(string str)
     {
         if(isDigit(str[i]))
             res = res*10 + str[i] - '0';
-            
+         
         else
             break;
     }
