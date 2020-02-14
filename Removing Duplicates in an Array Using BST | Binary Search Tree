@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode* left;
+        TreeNode* right;
+};
+
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data = item;
+    
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+TreeNode* insert(TreeNode* root, int key)
+{
+    
+    if(root != NULL){
+        if(key > root->data)
+            root->right = insert(root->right, key);
+        
+        if(key < root->data)
+            root->left = insert(root->left, key);
+    
+        return root;
+    }
+    
+    else
+        return newNode(key);
+    
+}
+
+void inOrder(TreeNode* root)
+{
+    if(root == NULL)
+        return;
+        
+    inOrder(root->left);
+    cout<< root->data <<" ";
+    inOrder(root->right);
+}
+
+int main()
+{
+    int arr[] = {127, 234, 127, 654, 355, 789, 355, 355, 999, 654};
+    int n = sizeof(arr)/sizeof(int);
+    
+    
+    TreeNode* root = NULL;
+    
+    for(int i = 0; i < n; i++)
+    {
+        root = insert(root, arr[i]);
+    }
+    
+    inOrder(root);
+    
+    cout<<endl;
+    cout<<"Array Elements : ";
+    
+    for(int i = 0; i < n; i++)
+        cout<< arr[i] <<" ";
+        
+    return 0;
+}
