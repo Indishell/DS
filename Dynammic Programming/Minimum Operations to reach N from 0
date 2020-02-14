@@ -1,0 +1,33 @@
+#include<iostream>
+using namespace std;
+int minOps(int n)
+{
+    int dp[n ];
+    
+    dp[0] = 0;
+    dp[1] = 1;
+    dp[2] = 2;
+    
+    for(int i = 3; i <= n; i++)
+    {
+        if(i % 2 == 0)
+            dp[i] = dp[i/2] + 1;
+            
+        else
+            dp[i] = dp[i - 1] + 1;
+    }
+    
+    return dp[n];
+}
+
+
+int main()
+{
+  int n = 7;
+  cout<< minops(n) << endl;//  O/P => 5 
+  
+  int p = 8 ;
+  cout<< minops(p) << endl; //  O/P => 4
+ 
+  return 0;
+}
