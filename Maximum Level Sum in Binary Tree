@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode* left;
+        TreeNode* right;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data = item;
+    
+    temp->left = temp->right = NULL;
+    return temp;
+}
+void inOrder(TreeNode* root)
+{
+    if(root == NULL)
+        return;
+    
+    inOrder(root->left);
+    cout<< root->data <<" ";
+    inOrder(root->right);
+}
+
+
+int levelSum(TreeNode* root)
+{
+    if(root == NULL)
+        return 0;
+        
+    queue<TreeNode*> mq;
+    
+    mq.push(root);
+    
+    int flag = 0;
+    int sum, maxSum = 0;
+    int level = 0;
+    while(!mq.empty())
+    {
+        int size = mq.size();
+        sum = 0;
+        while(size--)
+        {
+            TreeNode* temp = mq.front();
+            mq.pop();
+        
+            sum = sum + temp->data;
+            if(temp->left)
+                mq.push(temp->left);
+                    
+            if(temp->right)
+                mq.push(temp->right);
+        }
+        maxSum  = max(sum, maxSum);
+    }
+    return maxSum;
+    
+}
+
+int main()
+{
+    TreeNode* root = newNode(1); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(4); 
+    root->left->right = newNode(5); 
+    root->right->right = newNode(8); 
+    root->right->right->left = newNode(6); 
+    root->right->right->right = newNode(7); 
+    
+    
+    cout << levelSum(root);
+    return 0;
+}
