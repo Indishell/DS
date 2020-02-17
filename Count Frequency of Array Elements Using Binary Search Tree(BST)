@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+//This code is written by Anurag Mishra(0nurag)
+//https://hackerrank.com/0nurag
+class TreeNode
+{
+    public:
+        int  data;
+        int count;
+        TreeNode* left;
+        TreeNode* right;
+};
+//Every Node is having a count initializes as 1
+TreeNode* newNode(int item)
+{
+    TreeNode* tmp = new TreeNode;
+    tmp->data = item;
+    tmp->count = 1;
+    tmp->left = tmp->right = NULL;
+    
+    return tmp;
+}
+
+//When we insert Node here, if the node is already present then it will simply increase the count;
+TreeNode* insert(TreeNode* root, int item)
+{
+    if(root == NULL)
+        return newNode(item);
+    
+    if(item == root->data )
+        root->count += 1;
+        
+    if(item > root->data )
+        root->right = insert(root->right, item);
+    
+    else if(item < root->data )
+        root->left = insert(root->left, item);
+    
+    return root;
+}
+
+void inOrder(TreeNode* root)
+{
+    if(root == NULL)
+        return;
+    
+    inOrder(root->left);
+    cout<< root->data <<" -> " <<root->count <<endl;
+    
+    inOrder(root->right);
+    
+}
+
+
+int main()
+{
+    TreeNode* root = NULL;
+    
+    int arr[] = {1, 1, 1, 1, 6, 6, 4, 4, 4, 9};
+    int n = sizeof(arr)/sizeof(int);
+    
+    for(int i = 0; i < n; i++ )
+    {
+        root = insert(root, arr[i]);
+    }
+    
+    inOrder(root);
+
+    return 0;
+}
