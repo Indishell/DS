@@ -1,0 +1,88 @@
+//Both Iterative and Recursive Solutions are provided
+//This code is written by Anurag Mishra
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode* left;
+        TreeNode* right;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data =  item;
+    temp->left = temp->right = NULL;
+    
+    return temp;
+}
+
+
+int bfsGetLevel(TreeNode* root, int node_data)
+{
+    if(root == NULL)
+        return 0;
+        
+    queue<TreeNode*> mq;
+    mq.push(root);
+    int mylevel = 1;
+    
+    while(mq.empty() == false)
+    {
+        int size = mq.size();
+        while(size--)
+        {
+            TreeNode* temp = mq.front();
+            mq.pop();
+            
+            if(temp->data == node_data)
+                return mylevel;
+            
+            if(temp->left)
+                mq.push(temp->left);
+                
+            if(temp->right)
+                mq.push(temp->right);
+        }
+        mylevel++;
+
+    }
+}
+
+
+int dfsGetLevel(TreeNode* root, int node_data, int level)
+{
+    if(root == NULL)
+        return 0;
+        
+    if(root->data == node_data)
+        return level;
+        
+    
+    int lh = dfsGetLevel(root->left, node_data, level + 1);
+    int rh = dfsGetLevel(root->right, node_data, level + 1);
+    
+    return (lh == NULL) ? rh : lh;
+}
+
+int main()
+{
+    TreeNode* root = newNode(3); 
+    root->left = newNode(2); 
+    root->right = newNode(5); 
+    root->left->left = newNode(1); 
+    root->left->right = newNode(4); 
+    
+
+    cout<<"Level of 1 is "<<dfsGetLevel(root, 1, 1)<< endl;
+    cout<<"Level of 2 is "<<dfsGetLevel(root, 2, 1)<< endl; 
+    cout<<"Level of 3 is "<<dfsGetLevel(root, 3, 1)<< endl; 
+    cout<<"Level of 4 is "<<dfsGetLevel(root, 4, 1)<<endl; 
+    cout<<"Level of 5 is "<<dfsGetLevel(root, 5, 1)<<endl; 
+    
+    return 0;
+}
