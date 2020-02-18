@@ -1,0 +1,62 @@
+//https://practice.geeksforgeeks.org/problems/maximum-sum-problem/0
+// HINT: If you break any number from [0, 12) 12 not included, the maximum sum turned out be the number itself
+//Make sure to consider int while dividing any element even it is not divided by the element.
+
+/*
+    Ex: n  = 12 = >     
+    
+    12/2 => 6
+    12/3 => 4
+    12/4 => 3
+    maxSum  = max(12 , 6+ 4 + 3)
+    maxSum = max(12, 13);
+    maxSum = 13;
+    
+    
+    Ex : n = 10;
+    
+    10/2 => 5
+    10/3 => 3
+    10/4 => 2
+    
+    maxSum = max(10, 5 + 3 +2)
+    maxSum = max(10, 10);
+    maxSum = 10
+
+*/
+
+
+int maximumSum(int n)
+{
+     if(n == 0 || n == 1)
+        return n;
+    
+    int sum2 = maximumSum(n/2);
+    int sum3 = maximumSum(n/3);
+    int sum4 = maximumSum(n/4);
+        
+    return max(n, sum2 + sum3 + sum4);
+    
+}
+int dpSol(int n)
+{
+    int dp[n + 1];
+    
+    
+    dp[0] =  0;
+    dp[1] = 1;
+    
+    for(int i = 2 ; i <= n;  i++)
+    {
+        dp[i] = max(dp[i/2] + dp[i/3] + dp[i/4], i);
+    }
+    
+    return dp[n];
+}
+
+int main()
+{
+  int n =12;
+  
+   cout<< maximumSum(n);
+   cout<<dpSol(n);
