@@ -1,0 +1,57 @@
+int findLevel(TreeNode* root, int k)
+{
+    int level = 0,sum = 0;
+    
+    if(root == NULL)
+        return 0;
+    
+    queue<TreeNode*> mq;
+    mq.push(root);
+    TreeNode* temp;
+    
+    
+    while( !mq.empty())
+    {
+        int size = mq.size();
+        sum = 0;
+
+        while(size--)
+        {
+            temp = mq.front();
+            mq.pop();
+            
+            sum = sum + temp->data;
+        
+            if(sum == k)
+                return level;
+            if(temp->left)
+                mq.push(temp->left);
+                
+            if(temp->right)
+                mq.push(temp->right);
+        }
+        level++;
+
+    }
+    
+    return -1;
+}
+
+int main()
+{
+    TreeNode*root= newnode(2); 
+	root->left= newnode(7); 
+	root->right= newnode(5); 
+	root->right->right = newnode(9);
+	root->right->right->left = newnode(4);
+	root->left->left = newnode(2); 
+	root->left->right = newnode(6);
+	root->left->right->left = newnode(5);
+	root->left->right->right = newnode(11);
+	
+
+	cout<< findLevel(root, 22);
+	
+    
+    return 0;
+}
