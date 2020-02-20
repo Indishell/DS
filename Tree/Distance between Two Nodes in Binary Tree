@@ -1,0 +1,105 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+/*
+                          1
+                      /       \    
+                     2          3
+                   /    \      /   \
+                  4      5    6      7
+                               \
+                                8
+
+      Suppose We have to find Distance between 4  and 8
+     1. Search for lowest Common Ancestor of Node(4,8) which is 1
+     //  1 2 4
+     // 1 3 6 8
+    
+     You can see both have 1 as lowest common node which is also known as lowest common ancestor.
+    
+     2. Now make 1 or Lca node as root and  search level for 4 
+        same step again.
+        
+     3. Now the level of Node with data 4 from 1 is 2 
+        Now the level of Node with data 8 from 1 is 3
+     4. Add both results, 2 + 3 = 5
+     
+     5. If you see closely, you will find that distance between 4 and 8 is 5. which is correct. 
+*/
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode* left;
+        TreeNode* right;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data = item;
+    temp->right  = temp->left = NULL;
+    return temp;
+};
+
+TreeNode* findlowestancestor(TreeNode* root, int a, int b){
+	if(!root)
+		return NULL;
+
+	if(root->data==a || root->data==b)
+		return root;
+ 
+	TreeNode* leftLCA =findlowestancestor(root->left,a,b);
+	TreeNode* rightLCA =findlowestancestor(root->right,a,b);
+
+	if(leftLCA && rightLCA)
+		return root;
+	return (leftLCA ==NULL ? rightLCA : leftLCA);
+}  
+
+int findLevel(TreeNode* root, int k, int level)
+{
+    if(root== NULL)
+        return 0;
+        
+    if(root->data == k)
+        return level;
+    
+    int left = findLevel(root->left, k, level + 1);     
+    int right = findLevel(root->right, k, level + 1);
+   
+   return (left != NULL ? left : right ); 
+}
+
+
+int findDistance(TreeNode* root, int n1, int n2)
+{
+    TreeNode* LCA = findlowestancestor(root, n1, n2);
+    
+    int p = findLevel(LCA, n1, 0);
+    int q = findLevel(LCA, n2, 0);
+    
+    return p + q;
+    
+}
+
+int main()
+{
+    TreeNode* root = newNode(1); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(4); 
+    root->left->right = newNode(5); 
+    root->right->left = newNode(6); 
+    root->right->right = newNode(7); 
+    root->right->left->right = newNode(8);
+	
+	  cout << "Dist(4, 5) = " << findDistance(root, 4, 5); 
+    cout << "\nDist(4, 6) = " << findDistance(root, 4, 6); 
+    cout << "\nDist(3, 4) = " << findDistance(root, 3, 4); 
+    cout << "\nDist(2, 4) = " << findDistance(root, 2, 4); 
+    cout << "\nDist(8, 5) = " << findDistance(root, 8, 5); 
+	
+	  
+    return 0;
+}
