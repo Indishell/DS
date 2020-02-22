@@ -1,0 +1,130 @@
+/*
+
+                                                          10
+                                                        /     \
+LEFT SIDE ----------------------------->>>            2         3                       <<<-------------------------- RIGHT SIDE
+                                                    /   \    /    \
+                                                   7     8  12     15
+                                                                  /
+                                                                14
+
+
+  
+  *If we see the tree from the Right Side, we will se 10, 3, 15 and 14 if seen from the right side
+  
+  * If we see the tree from the Left Side, we will see 10, 2, 7 and 14 if seen from the left side 
+
+  For Left view we have to print the first node of each level.
+ 
+  For right View we have to print the last node of each level.
+*/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode* right;
+        TreeNode* left;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data = item;
+    temp->left = temp->right = NULL;
+    
+    return temp;
+}
+
+
+void bfs_leftView(TreeNode* root)
+{
+    if(!root)
+        return;
+        
+    queue<TreeNode*> mq;
+    mq.push(root);
+    int count = 1;
+    while(!mq.empty())
+    {
+        int size = mq.size();
+        
+        count = 1;
+        while(size--)
+        {
+            TreeNode* temp = mq.front();
+            mq.pop();
+            
+            if(count == 1)
+            {
+                cout<<temp->data <<" ";
+                count++;
+            }
+            
+            if(temp->left)
+                mq.push(temp->left);
+            
+            if(temp->right)
+                mq.push(temp->right);
+        }
+    }
+    
+}
+
+void bfs_rightView(TreeNode* root)
+{
+    if(!root)
+        return;
+        
+        
+    queue<TreeNode*> mq;
+    mq.push(root);
+    int count;
+    while(!mq.empty())
+    {
+        count = 1;
+        int size = mq.size();
+        int checkSize = size;
+        while(size--)
+        {
+            TreeNode* temp = mq.front();
+            mq.pop();
+            
+           if(count == checkSize)
+           {
+               cout<< temp->data <<" ";
+           }
+           count++;
+            if(temp->left)
+                mq.push(temp->left);
+                
+            if(temp->right)
+                mq.push(temp->right);
+                
+        }
+        
+    }
+    
+}
+
+int main()
+{
+
+    TreeNode* root = newNode(10); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(7); 
+    root->left->right = newNode(8); 
+    root->right->right = newNode(15); 
+    root->right->left = newNode(12); 
+    root->right->right->left = newNode(14); 
+
+    bfs_rightView(root);
+    bfs_leftView(root);
+
+    
+    return 0;
+}
