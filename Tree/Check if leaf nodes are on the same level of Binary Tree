@@ -1,0 +1,114 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode* left;
+        TreeNode* right;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp =new TreeNode;
+    temp->data = item;
+    temp->left  =temp->right = NULL;
+    
+    return temp;
+}
+
+bool isLeafNode(TreeNode* anyNode)
+{
+    
+    if(anyNode->left == NULL && anyNode->right == NULL)
+        return true;
+    else
+        return false;
+}
+
+int countleafNodes(TreeNode* root)
+{
+    int leafCount = 0;
+    if(root == NULL)
+        return 0;
+        
+    if(isLeafNode(root))
+        leafCount++;
+    
+    return leafCount + countleafNodes(root->left) + countleafNodes(root->right);
+}
+
+
+bool isLeafOnLevel(TreeNode* root)
+{
+    if(!root)
+        return true;
+        
+    int count;
+    
+    queue<TreeNode*> mq;
+    mq.push(root);
+    
+    int leafCount = countleafNodes(root);
+    
+    while(!mq.empty())
+    {
+        int size = mq.size();
+        count = 0;
+        while(size--)
+        {
+            TreeNode* temp = mq.front();
+            mq.pop();
+            
+            if(isLeafNode(temp))
+                count++;
+                
+            if(temp->left)
+                mq.push(temp->left);
+                
+            if(temp->right)
+                mq.push(temp->right);
+                
+                
+            if(count == leafCount)
+                {
+                    return true;
+                }
+        }
+    }
+    
+    return false;
+    
+}
+
+int main()
+{
+    /*
+          3
+        /    \
+       2      5       
+      /  \ 
+     6    7      
+    
+    Answer will be false, not all leaf nodes are at same level.
+    */
+    
+    
+    
+    TreeNode* root     = newNode(3);
+    root->left        = newNode(2);
+    root->right        = newNode(5);
+    
+    root->left->left   = newNode(6);
+    root->left->right   = newNode(7);
+    
+
+    if(isLeafOnLevel(root))
+        cout<<"All leaf nodes are on same level" << endl;
+    
+    else
+        cout<<"No, Leaf Nodes are not on same level" <<endl;
+        
+
+    return 0;
+}
