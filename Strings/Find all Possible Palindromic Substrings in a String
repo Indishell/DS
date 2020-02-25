@@ -1,0 +1,22 @@
+// Time Complexity, O(N^3) Approach 
+// Space Complexity, O(N) Approach
+
+bool isPalindrome(string str){
+    int low = 0;
+    int high = str.length() - 1;
+    while( high > low)
+    {        if(str[low++] != str[high--])
+            return false; }
+    return true;}
+void printPalindromicSubstring(string mystr)
+{    int n = mystr.length();
+    unordered_set<string> ms;
+    for(int L = 0; L < n; L++)
+    {   for(int R = 0; R < n; R++)   {  
+            if(isPalindrome(mystr.substr(L, R - L + 1)))
+                 ms.insert(mystr.substr(L, R - L + 1));
+        }
+    }    
+    for(auto const &p : ms)
+        cout<< p <<" ";
+}
