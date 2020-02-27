@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+int longestSequenceRecur(string first, string second, int m, int  n)
+{
+    if(m == 0 || n == 0)
+        return 0;
+        
+        
+    if(first[m - 1]  == second[n - 1])
+        return  1 + longestSequenceRecur(first, second, m - 1, n - 1);
+        
+        
+    return max(longestSequenceRecur(first, second, m - 1, n),longestSequenceRecur(first,  second, m , n - 1));
+}
+
+int dp_longestSubsequence(string first, string second, int m, int n)
+{
+    int dp[m + 1][n + 1];
+    
+    
+    for(int i = 0; i < m; i++)
+    {
+        for(int j =0; j < n; j++)
+        
+        {
+            if(i == 0 || j == 0)
+                dp[i][j] =  0;
+                
+            if(first[m - 1] == second[n - 1])
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+                
+            
+            dp[i][j] = max(dp[i - 1][j], dp[i][j -1]);
+        }
+    }
+    return dp[m][n];
+}
+
+int main()
+{
+    string first = "AGGTAB";
+    string second = "GXTXAYB";
+    
+    int m  = first.length();
+    int n = second.length();
+    
+    cout<<longestSeuquenceRecur(first, second, m, n);
+    cout<<dp_longestSequence(first, second, m, n);
+    
+}
