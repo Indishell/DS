@@ -41,4 +41,42 @@ TreeNode* constructTree(char inorder[], char preorder[], int inStart, int inEnd)
 
 ===============Efficient Solution===============
 
+Expected TC: O(N), here unordered_map is used, we basically stored all the indexes of inorder in a hashmap whose look up time is constant, i.e O(1).
+
+
+TreeNode* constructTree(char inorder[], char preorder[], int start, int end, unordered_map<char, int> &mp) {
+    
+    static int fix = 0;
+    
+    
+    if(start > end)
+        return NULL;
+        
+    char curr = preorder[fix++];
+    TreeNode* root = newNode(curr);
+    
+    if(start == end)
+        return root;
+        
+    int index = mp[curr];
+    
+    root->left = constructTree(inorder, preorder, start, index - 1, mp);
+    root->right = constructTree(inorder, preorder, index + 1, end, mp);
+    
+    return root;
+}
+
+
+TreeNode* buildWrapper(char inorder[], char preorder[], int len)
+{
+    unordered_map<char, int> mp;
+    
+    // store all the elements in a hashmap so that we can easily view the index of that element.
+    for(int i = 0; i < len; i++)
+        mp[inorder[i]] = i;
+    return constructTree(inorder, preorder, 0, len - 1, mp);
+}  
+
+
+
 
