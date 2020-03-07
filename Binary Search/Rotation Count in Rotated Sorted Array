@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int rotationCount(int arr[], int n)
+{
+    int count, minEle = INT_MAX;
+    
+    for(int i = 0; i <  n; i++)
+    {
+        if(minEle > arr[i])
+        {
+            minEle = arr[i];
+            count =  i;
+        }
+    }
+    return count;
+}
+
+int binarysearch_rotationCount(int arr[], int low, int high)
+{
+    if(low > high)
+        return 0;
+        
+    if(low == high) 
+        return low;
+        
+    int mid = (low + high)/2;
+    
+    if(mid > low && arr[mid -  1] > arr[mid])
+        return mid;
+        
+    if(mid < high && arr[mid] > arr[mid + 1])
+        return mid + 1;
+        
+    if(arr[high] > arr[mid])
+        return binarysearch_rotationCount(arr, low, mid - 1);
+        
+    else
+        return binarysearch_rotationCount(arr, mid + 1, high);
+}
+
+
+int main()
+{
+    
+    int arr[] = {7, 9, 11, 12, 5};
+    int n = sizeof(arr)/sizeof(int);
+    
+    cout<< binarysearch_rotationCount(arr, 0, n - 1);
+    return 0;
+}
