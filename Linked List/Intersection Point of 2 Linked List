@@ -1,0 +1,144 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+/*
+
+
+Approach : 1
+Simple Algortithm in steps.
+TC: O(c1 + c2) where c1 and c2 are number of nodes in Linked List 1 and 2 respectively.
+SC: O(1)
+
+List1 => Count Nodes: c1
+List2 -> Count Nodes: c2
+
+int d = abs(c1 - c2);
+Difference between the count of nodes between c1 and c2;
+
+1. There are two lists, Count number of nodes in each of the list.
+2. If the count are same we dont have to do anything because the pointers of both lists points to same level however the different nodes.
+3. If count is not same for the two linked list, we will simple calculate the difference of both the counts using variable , d. 
+4. Now we will check whch list is bigger List1 or List2, if list1 is bigger than List2 by difference d, Then we will iterate d times in the bigger list, Now list1 and list2 are on the same level. And we can check by simply having a loop which will check if the pointers of both lists are pointing to a particular node or not on traversing the whole list.
+5. If we don't get any intersection point, Simply return -1;
+
+
+Approach  : 2
+set approach 
+Space Complexity : O(N) 
+Time Complexity: O(N)
+1. Insert all the nodes of a linked List in set.
+2. Traverse the second list and check if set contains any node of second Linked List which is present in set, Simple return that node data.
+3. If set doesn't contain any node, simply return -1;
+
+
+
+*/
+
+
+
+
+class Node
+{
+    public:
+        int data;
+        Node* next;       
+        Node(int item)
+        {
+            this->data = item;
+            this->next = NULL;
+        }
+
+};
+void  printList(Node* head)
+{
+    while(head != NULL)
+    {
+        cout<<head->data<<" ";
+        head = head->next;
+    }
+}
+
+int getCount(Node* p);
+int getIntersection(Node* head1, Node* head2,int d);
+int DominantNode(Node* head1, Node* head2);
+
+
+int getCount(Node* head)
+{
+    int count = 0;
+    while(head != NULL)
+    {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+    
+int getIntersection(int d, Node* head1, Node* head2)
+{
+    Node* h1 = head1;
+    Node* h2 = head2;
+    
+    for(int  i = 0; i < d && h1 != NULL; i++)
+        h1 = h1->next;
+        
+    while(h1 && h2)
+    {   
+        if(h1 == h2)
+            return h1->data;
+            
+        h1 = h1->next;
+        h2 = h2->next;
+    }
+    
+    return -1;
+}
+
+int DominantNode(Node* head1, Node* head2)
+{
+    int c1 = getCount(head1);
+    int c2 = getCount(head2);
+    int d = abs(c1 - c2);
+    
+    if(c1 > c2)
+    {
+        return getIntersection(d,head1, head2);
+    }   
+    else
+    {
+        return getIntersection(d, head2, head1);
+        
+    }
+}
+
+
+
+int main()
+{
+    Node* newNode; 
+  
+    // Addition of new nodes 
+    Node* head1 = new Node(10); 
+  
+    Node* head2 = new Node(3); 
+  
+    newNode = new Node(6); 
+    head2->next = newNode; 
+  
+    newNode = new Node(9); 
+    head2->next->next = newNode; 
+  
+    newNode = new Node(15); 
+    head1->next = newNode; 
+    head2->next->next->next = newNode; 
+  
+    newNode = new Node(30);
+    head1->next->next = newNode; 
+  
+    head1->next->next->next = NULL; 
+    
+    cout<< DominantNode(head1, head2);
+    
+    return 0;
+}
