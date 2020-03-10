@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+// Input : input = 110101010
+// Output : Length of longest balanced
+        //  sub string = 8
+
+// Input : input = 0000
+// Output : Length of longest balanced
+        //  sub string = 0
+
+
+//Naive Solution : O(N^3) 
+
+Approach : 
+
+1. First checck the string is valid or not , basically count the number of 0 and 1 in any string .
+2. Within two nested loops, check for the string to be valid and  if it's length is greater than max_len , update it.
+3. It will be our answer.
+
+
+bool isValid(string p)
+{   int n = p.length();
+    int c1 = 0, c0 = 0;
+    for(int i =0; i < n; i++)
+    {
+        if(p[i] == '0')  c0++;
+        if(p[i] == '1')  c1++;
+    }
+    return (c0 == c1) ? true : false;
+}
+int longestSub(string s)
+{
+    int max_len = 0;
+    int n = s.length();
+    for(int i = 0; i < n; i++)
+    {  for(int j = 0; j < n; j++)
+        {    if(isValid(s.substr(i, j - i + 1))  && max_len < j - i + 1)
+                max_len =  j - i + 1;
+        }
+    }
+    return max_len;
+}
+
+
+
+====Efficient Solution====
+
