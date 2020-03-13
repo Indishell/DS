@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+void runEncoding(string str)
+{
+    unordered_map<char, int> mp;
+    
+    int n = str.length();
+    for(int i = 0; i < n; i++)
+        mp[str[i]]++;
+    
+    // wwwwaaadexxxxxxywww
+    // w4a3d1e1x6y1w3
+
+
+    for(int i = 0; i < n; i++)
+    {
+        if(mp[str[i]] >= 1)
+        {
+            cout<<str[i]<<mp[str[i]];
+            mp[str[i]] = 0;
+        }
+        
+        
+        else
+            continue;
+    }
+}
+
+
+
+int main()
+{
+    
+    string str = "wwwwaaadexxxxxxywww";
+    runEncoding(str);
+    
+    return 0;
+    
+    
+}
