@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+//For finding the factorial of a number
+unsigned long int factorial(unsigned p)
+{
+    unsigned long int res = 1;
+    for(int i = 1; i <= p; i++)
+    {
+        res *= (i);
+    }
+    return res;
+}
+//For finding binomial coefficient of a number
+unsigned long int binomialCoeff(unsigned int n, unsigned int k)
+{
+    unsigned long int res = 1;
+    
+    if(k > n - k)
+        k = n - k;
+    
+    for(int i = 0; i < k; i++)
+    {
+        res *= (n - i);
+        res/= (i + 1);
+    }
+    return res;
+}
+
+//Making use of catalan numbers to find number of binary search trees and binary trees.
+unsigned long int catalan(unsigned int n)
+{
+    unsigned long int c = binomialCoeff(2*n, n);
+    
+    return c/(n + 1);
+}
+
+unsigned long int BST(unsigned int n)
+{
+    unsigned long int count = catalan(n);
+    
+    return count;
+}
+
+unsigned long int BinaryTree(unsigned int n)
+{
+    unsigned long int count = catalan(n);
+    
+    return count * factorial(n);
+}
+
+
+int main()
+{
+   int  n  = 5;
+   
+   int count1 = BST(n);
+   int count2 = BinaryTree(n);
+   cout<<"Count of BST with " << n <<" Nodes are : " << BST(n)<<endl; 
+   cout<<"Count of Binary Tree with " << n <<" Nodes are : " << BinaryTree(n)<<endl; 
+    
+    
+    return 0;
+}
