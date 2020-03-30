@@ -1,0 +1,147 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+// In english, We have size as 26 because there are 26 alphabets in english Language
+const int SIZE = 26;
+
+class TrieNode
+{
+    public:
+        TrieNode* children[SIZE];
+        bool isEndOfWord;
+};
+
+TrieNode* createNode()
+{
+    // Each node holds alphabet value and it's pointing to array of references,
+    //(reference may be NULL or any other alphabet or it may contain some value)
+    // In english Language, there are 26 alphabets, so At most a Single node can
+    // have references to 26 other nodes , That's Why I have taken Size = 26;
+    
+
+    TrieNode* temp = new TrieNode;
+    
+    for(int i = 0; i < SIZE; i++)
+        temp->children[i] =  NULL;
+        
+    temp->isEndOfWord = false;
+    return temp;
+}
+
+void insert(TrieNode* root, string key)
+{
+    TrieNode* temp  = root;
+    // Take a new TrieNode and pointing  to root
+    
+    // It will iterate through the length of the key it want to insert
+    for(int i =0; i  < key.length(); i++)
+    {
+        // get the index of the character and stores it;
+        int index = key[i] - 'a';
+        /*
+         If the index  of the character is not present,
+         then temp will point to that node and create a new TrieNode,
+         so that current alphabet gets stored in the trie and that index
+         
+         As we have seen each nodes is having array of references,
+         
+         Suppose we have to insert two keys in our Trie.
+                Keys = {root, roof}
+    
+                _(Empty Node)
+               /
+              R
+             /
+            O
+             \
+              O
+             /  \
+            F    T
+    
+            Note: I have not mentioned all the 26 references,
+            because then it becomes a pronlonged exhausting task for me.
+            
+            Now what happens, Like we have first inserted ROOT
+            Now when time come for Key : ROOF for insertion   
+            
+            Our Loop  will iterate over the present key we want to insert
+            (ROOF in this case) 
+            When roof checks that the index for that particular element is
+            already filled/occupied , then it will come down to next character
+            Now our pointer is at Node O and it is pointing  to another O
+            then again it sees that index for that character is also filled.
+            
+            Now, We have came all over to ROO ,and we are left with F (our last
+            character) , then again it checks if any index holding the value of 
+            f. In this case, no one holds it , so now F gets filled.
+            
+            Then pointer came to F and again it checks, loop has already reached
+            the keys length, So it Stops.
+            
+            */
+        if(!temp->children[index])
+        {
+            temp->children[index] =  createNode();
+        }
+        
+        temp = temp->children[index];
+    }
+    temp->isEndOfWord = true;
+}
+
+// It will return true, if string key exists in our trie.
+bool  search(TrieNode* root, string key)
+{
+    TrieNode* temp = root;
+    
+    for(int i = 0; i < key.length(); i++)
+    {
+        // it will get the index of the alphabet
+        int index = key[i] - 'a';
+        
+        // if the index of alphabet don't match with the node present there,
+        // it is false
+        if(!temp->children[index])
+            return false;
+        // Temp  will now come to it's reference who is holding the alphabet.
+        temp = temp->children[index];
+    }
+    // It will checker, if temp is not reached  null and also the word is
+    // completed yet, if the keyword exhaust and we have a long string to check, 
+    // then  after some comparison, it will give us false because our search  
+    // query str len is grtr than the word length that exists in the trie.
+    return(temp != NULL && temp->isEndOfWord == true);
+}
+
+
+bool isLeaf(TrieNode* root)
+{
+    return(root->isEndOfWord != false);
+}
+
+
+
+int main() 
+{
+    string keys[] = {"the", "a", "there", 
+                    "answer", "any", "by", 
+                     "bye", "their" };
+
+    int n = sizeof(keys)/sizeof(keys[0]);
+    
+    TrieNode*  root = createNode();
+    
+    for(int i =0; i < n; i++)
+    {
+        insert(root, keys[i]);
+    }
+    
+
+    search(root, "the") ? cout<< "FOUND\n" : cout<<"NOT FOUND\n";
+    search(root, "these") ? cout<< "FOUND\n" : cout<<"NOT FOUND\n";
+    search(root, "their") ? cout<< "FOUND\n" : cout<<"NOT FOUND\n";
+    search(root, "thaw") ? cout<< "FOUND\n" : cout<<"NOT FOUND\n";
+    
+    
+    return 0; 
+}
