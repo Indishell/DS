@@ -1,0 +1,105 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+/*
+// This code is written by Anurag Mishra
+1. I have taken a very naive approach, though it run in O(N) time , where N is number of nodes in Tree.
+
+STEPS:
+a) Get the sum of all the nodes in the tree.
+b) Call The Transform function with sum variable as reference, so that it can get updated in all calls we make.
+c) Do In-order Traversal of Binary Tree and reduce sum by subtracting root->data from sum
+d) Update the root with the new sum and call for the right subtree.
+
+   Before:    8
+           /    \
+          4      12
+        /  \     /  \
+       2    6   10  14
+
+    After:        
+             8
+           /    \
+          4      12
+        /  \     /  \
+       2    6   10  14
+
+ 
+ 
+ 
+ 
+ 
+  
+
+
+
+
+*/
+
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode *left, *right;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+void inOrder(TreeNode* root)
+{
+    if(root == NULL)    return;
+    inOrder(root->left);
+    cout<< root->data<<" ";
+    inOrder(root->right);
+}
+
+void convert(TreeNode* root, int& sum)
+{
+    if(root == NULL)     return;
+    
+    
+    convert(root->left, sum);
+    
+    sum = sum - root->data;
+    
+    root->data = sum;
+    
+    convert(root->right, sum);
+    
+    
+}
+
+
+
+int main() 
+{
+   
+    
+    
+  
+    TreeNode *root = newNode(8); 
+    root->left = newNode(4); 
+    root->right = newNode(12); 
+    root->left->left = newNode(2); 
+    root->left->right = newNode(6); 
+    root->right->left = newNode(10); 
+    root->right->right = newNode(14); 
+
+    cout<< "Tree before Conversion : \n";    
+    inOrder(root);
+    
+    int sum = 56;
+    convert(root, sum);
+    
+    cout<<" Tree after Conversion : \n";
+    inOrder(root);
+    
+    return 0; 
+}
+// 54 50 44 36 26 14 0 
