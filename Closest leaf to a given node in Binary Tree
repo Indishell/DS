@@ -1,0 +1,138 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+    public:
+        int data;
+        TreeNode *left, *right;
+};
+TreeNode* newNode(int item)
+{
+    TreeNode* temp = new TreeNode;
+    temp->data = item;
+    temp->left = temp->right = NULL;
+    
+    return temp;
+};
+
+TreeNode* lca(TreeNode* root, TreeNode* A, TreeNode* B)
+{
+    if(root == NULL)
+        return NULL;
+        
+    if(root == A || root  ==  B)
+        return root;
+
+    TreeNode *leftLCA =   lca(root->left, A, B  );
+    TreeNode *rightLCA = lca(root->right, A, B );
+    
+    if(leftLCA && rightLCA)
+        return root;
+        
+    return (leftLCA != NULL) ? leftLCA : rightLCA;
+}
+
+
+int findLevel(TreeNode* ancestor, TreeNode* k, int level)
+{
+    if(ancestor == NULL)
+        return -1;
+        
+    if(ancestor == k)
+        return level;
+        
+    int left = findLevel(ancestor->left, k, level + 1);
+    
+    if(left == -1)
+        return findLevel(ancestor->right, k, level + 1);
+    
+    return left;
+
+}
+
+
+void pushLeaves(TreeNode* root, vector<TreeNode*> &leave)
+{
+    if(root == NULL)
+        return;
+        
+    if(root->left == NULL && root->right == NULL)
+        leave.push_back(root);
+    
+    pushLeaves(root->left, leave);
+    pushLeaves(root->right, leave);
+}
+
+int findDistance(TreeNode *root, TreeNode* X)
+{
+    if(root == NULL )   return 0;
+    
+    if(root == X) return 0;
+    
+    vector<TreeNode*> leave;
+    pushLeaves(root, leave);
+    
+    int minM = INT_MAX;
+    
+    TreeNode* ancestor;
+    
+    for(int i = 0; i < leave.size(); i++)    
+    {
+        ancestor = lca(root, X, leave[i]);
+        
+        int p = findLevel(ancestor, X, 0);
+        int q = findLevel(ancestor, leave[i], 0);
+        
+        if(p  + q < minM)
+            minM = p + q;
+        
+    }
+    
+    return minM;
+}
+
+int main()
+{  
+    /*
+    
+                    
+                          10
+                       /     \
+                     12       13
+                     /        /     
+                    17       14  
+                      \            
+                        19
+                        /
+                        21
+                           
+    */
+    
+    TreeNode* root  = newNode(1); 
+    root->left  = newNode(12); 
+    root->right = newNode(13); 
+  
+    root->right->left   = newNode(14); 
+    root->right->right  = newNode(15); 
+  
+    root->right->left->left   = newNode(21); 
+    root->right->left->right  = newNode(22); 
+    root->right->right->left  = newNode(23); 
+    root->right->right->right = newNode(24); 
+  
+    root->right->left->left->left  = newNode(1); 
+    root->right->left->left->right = newNode(2); 
+    root->right->left->right->left  = newNode(3); 
+    root->right->left->right->right = newNode(4); 
+    root->right->right->left->left  = newNode(5); 
+    root->right->right->left->right = newNode(6); 
+    root->right->right->right->left = newNode(7); 
+    root->right->right->right->right = newNode(8);  
+  
+    TreeNode* X = root->right;
+
+
+    cout<<findDistance(root, X);
+    return 0;
+}
