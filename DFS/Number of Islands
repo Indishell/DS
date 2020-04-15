@@ -1,0 +1,82 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+#define R 5
+#define C 5
+
+
+bool isSafe(int mat[][C], int m , int n, bool visited[][C])
+{
+    
+    return (m >= 0 )&&  (m < R ) && (n >= 0) && (n < C) && (!visited[m][n] && mat[m][n]);
+}
+
+
+void DFS(int mat[][C], int m, int n, bool visited[][C])
+{
+   // ye  (x, y) ek particular lement ke cordinates hain 8 direction me, jese
+   // (-1, -1), (-1, 0), (-1, 1), (0, -1) , (0, 1), (1, -1), (1, 0), (1, 1);
+   
+    static int row[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    static int col[] = {-1, 0, 1 , -1, 1, -1, 0, 1};
+    
+    visited[m][n] = true;
+    
+    
+    for(int k = 0; k < 8; k++)
+    {
+        if(isSafe(mat, m + row[k], n + col[k], visited))
+        {
+            DFS(mat, m + row[k], n + col[k], visited);
+        }
+    }
+
+
+}
+
+
+
+int countIslands(int mat[][C])
+{
+    bool visited[R][C];
+   
+    // three args
+    // pehle kis cheej ke lie karna hai -> in this case ==> visited array ke lie
+    // second kya value fill karni hai -> in this case ==> 0
+    // third case kaha se kaha tak, agar pura karna hai to argument me sizeofarray dal do, to sizeof(visited)
+    memset(visited, 0, sizeof(visited));
+    
+    int count =  0;
+    
+    
+    
+    for(int i =0; i  < R; i++)
+    {
+        for(int j =0; j < C; j++)
+        {
+            if(mat[i][j] == 1 && !visited[i][j])
+                    {
+                        DFS(mat, i, j, visited);
+                        count++;
+                    }
+            
+        }
+    }
+   return count;
+}
+  
+  
+  
+int main()
+{
+    
+    int mat[R][C] =  { { 1, 1, 0, 0, 0 }, 
+                     { 0, 1, 0, 0, 1 }, 
+                     { 1, 0, 0, 1, 1 }, 
+                     { 0, 0, 0, 0, 0 }, 
+                     { 1, 0, 1, 0, 1 } }; 
+                     
+                     
+    cout<< countIslands(mat);
+    return 0;
+}
