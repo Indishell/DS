@@ -1,3 +1,19 @@
+
+
+// Create a Min heap and remove the minimum element k times.
+// Time taken to create a heap of => O(n)
+//Time Complexity : O(n + kLogn)
+        
+ /*
+ Algorithm:
+ 
+ 1. Make a Minheap and insert all elements of array.
+ 2. Now for kth smallest element, remove root element k times and each time after removing call heapify(0) because maybe heap property may get violated.
+ 3. After removing (k - 1) items from MinHeap, Basically simple return nthe root element by harr[0] in this case.
+
+ */
+
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -95,8 +111,3 @@ int main()
 }
 
 
-
-// Create a Min heap and remove the minimum element k times.
-// Time taken to create a heap of => O(n)
-//Time Complexity : O(n + kLogn)
-        
