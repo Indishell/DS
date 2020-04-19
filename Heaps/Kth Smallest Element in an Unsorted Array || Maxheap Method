@@ -1,0 +1,146 @@
+
+/*
+
+Basically , This case is more optimal , Let me first tell you it's algorithm.
+
+Suppose our array size is N.
+
+1. Create a Maxheap of K elements, (kth smallest/largest element as per our desire)
+2. Now after making MaxHeap of K elements, (N - K) elements are remaining.
+
+3. Check for every element from (k + 1)th to N, and check if array element is smaller than the root element of the heap.
+Make the array element as root, and call heapify for root method. as heap property may get violated.
+4. Now after doing it for all the remaining elements , We have our heap of size k
+5. Simply return the top element of heap , by doing harr[0].
+
+
+
+Time Complexity:
+1. Time taken to create heap of K elements => O(K)
+2. Calling Heapify Method for k elements = > log(K);
+3. We have called Heapify Method for (N - k)times 
+  Total Time Complexity = O(K + (N - K)*logK);
+  We can assume N >> K, so we can ignore the value of K.
+  SO finally  as k is neglected, We get  O(NlogK)
+  
+  Time Complexity: O(NlogK)
+  Space Complexity : O(K)
+*/
+
+
+#include <bits/stdc++.h> 
+using namespace std; 
+
+void swap(int *x, int *y);
+
+class MaxHeap
+{
+    int heap_size;
+    int* harr;
+    
+    public:
+        MaxHeap(int a[],int size);
+        
+        void heapify(int i );
+        int parent(int i) {return (i - 1)/2; }
+        int left(int i) {return 2*i + 1;}
+        int right(int i) {return 2*i + 2;}
+        
+        int extractMax();  //Removes root element, or remove maximum element
+        int getMax() { return harr[0];}
+        void replaceMax(int x) 
+            { 
+                harr[0] = x; 
+                heapify(0); 
+            } 
+        
+
+};
+
+MaxHeap:: MaxHeap(int a[], int size)
+{
+    heap_size = size;
+    harr = a;
+    
+    
+    int i = (heap_size - 1)/2;
+    
+    while(i >= 0)
+    {
+        heapify(i);
+        i--;
+    }
+}
+
+int MaxHeap :: extractMax()
+{
+    if(heap_size == 0)
+        return INT_MAX;
+        
+    int root = harr[0];
+    
+    if(heap_size > 1)
+    {
+        harr[0] =  harr[heap_size - 1];
+        heapify(0);
+    }
+    heap_size--;
+    return root;
+}
+void MaxHeap :: heapify(int i)
+{
+    int l = left(i);
+    int r = right(i);
+    
+    int largest = i;
+    
+    if(l < heap_size && harr[l] > harr[i])
+        largest = l;
+        
+    if(r < heap_size && harr[r] > harr[largest])
+        largest = r;
+        
+    if(largest != i)
+    {
+        swap(&harr[i], &harr[largest]);
+        heapify(largest);
+    }
+}
+
+void swap(int *x, int *y)
+{
+    int temp = *x;
+    *x  = *y;
+    *y =  temp;
+}
+
+
+
+int firstKelements(int A[], int n, int k)
+{
+    MaxHeap mh(A, k);
+    
+    
+    for(int i = k; i < n; i++)
+    {
+        if(A[i] < mh.getMax())
+        {
+            mh.replaceMax(A[i]);
+        }
+    }
+    
+    return mh.getMax();
+}
+
+int main()
+{
+    int A[] = { 11, 3, 2, 1, 15, 5, 4, 45, 88, 96, 50, 45 }; 
+    int n = sizeof(A)/sizeof(int);
+    
+    int k = 6;
+    
+    
+    cout << firstKelements(A, n, k);
+    
+    return 0;
+}
