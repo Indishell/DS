@@ -1,0 +1,99 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+class Graph
+{
+    public:
+        int V;
+        //List is internally implemented as doubly linked list and can point to all other nodes, as specified.
+        list<int> *adj;
+
+        void DFSutil(int v, bool visited[]);
+        public:
+          //Constructor
+            Graph(int V);
+            
+            void addEdge(int v, int w);
+            int countNotReachable(int v);
+};
+
+Graph :: Graph(int V)
+{
+    this->V = V;
+    adj = new list<int>[V];
+}
+
+void Graph:: addEdge(int v, int w)
+{
+  //For undirected graph ,there is no particular direction from node.
+  /*
+  Ex : from node u to v, There can be two paths, 
+  1) u -> v
+  2) v -> u
+  */
+    adj[v].push_back(w);
+    adj[w].push_back(v);
+    
+    
+   //For Directed Graph 
+   /*
+   adj[v].push_back(w);
+    1) u -> v
+    2) v -> u
+    
+    either of them is specified.
+   */
+}
+
+void Graph::  DFSutil(int v, bool visited[])
+{
+    visited[v] = true;
+    
+    
+    list<int> :: iterator it;
+    
+    for(it = adj[v].begin(); it != adj[v].end(); it++)
+        if(!visited[*it])
+            DFSutil(*it, visited);
+    
+}
+
+int Graph:: countNotReachable(int v)
+{
+    bool *visited = new bool[V];
+    
+    for(int i =0 ; i < V; i++)
+        visited[i] = false;
+    
+    DFSutil(v, visited);    
+    int count = 0;
+    
+    
+    for(int i =0; i < V; i++)
+    {
+        if(!visited[i])
+            count++;
+    }
+    
+    return count;
+}
+
+
+int main()
+{
+    
+    Graph g(8);
+    
+    g.addEdge(0, 1); 
+    g.addEdge(0, 2); 
+    g.addEdge(1, 2); 
+    g.addEdge(3, 4); 
+    g.addEdge(4, 5); 
+    g.addEdge(6, 7); 
+    
+    // It will count all those nodes which are not connnected to HeadNode or node which is passed as a parameter to the node.
+    
+    // It will only mark all the nodes connectded to head nodes, which is given as a parameter
+    cout<< g.countNotReachable(2);
+    return 0;
+}
