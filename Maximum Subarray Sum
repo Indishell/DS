@@ -1,0 +1,41 @@
+
+// Make a Prefix Array
+// Search with Prefix[j] - Prefix[i - 1]
+// if found maximum, then update it with maximum sum
+// TC : O(N^2)
+// SC : O(N)
+
+
+int maximumSum(int A[], int n)
+{
+    int prefix[n];
+    
+    int maxM = INT_MIN;
+    
+    prefix[0] = A[0];
+    
+    for(int i = 1; i < n; i++)
+    {
+        prefix[i] = A[i]  + prefix[i - 1];
+    }
+    
+    
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            if((prefix[j] -  prefix[i - 1])  > maxM)
+                    maxM = prefix[j] -  prefix[i - 1];
+        }
+    }
+    
+    return maxM;
+}
+
+
+//-------------------------------------------------------------
+//TC: O(N)
+//SC: O(1)
+
+
+
