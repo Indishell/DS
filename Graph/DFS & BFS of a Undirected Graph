@@ -1,0 +1,115 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
+#define ll long long
+const ll MOD = 1000000007;
+
+
+class  Graph
+{
+	int V;
+	list<int> *adj;
+public:
+	Graph(int V);
+	void addEdge(int v, int w);
+	 void BFS(int source);
+	  void DFS(int source, vector<int> &visited);
+};
+
+Graph:: Graph(int V)
+{
+	this->V = V;
+	adj = new list<int>[V];
+}
+
+
+void Graph:: addEdge(int v, int w)
+{
+	adj[v].push_back(w);
+}
+
+
+void Graph:: BFS(int source)
+{
+	bool* visited =  new  bool[V];
+
+	for (int i = 0; i < V; i++)
+	{
+		visited[i] = false;
+	}
+
+	list<int> mq;
+
+	visited[source] = true;
+	mq.push_back(source);
+
+	list<int> :: iterator i;
+
+
+	while (!mq.empty())
+	{
+		source = mq.front();
+		cout << source << " ";
+		mq.pop_front();
+
+
+		for (i = adj[source].begin(); i != adj[source].end(); i++)
+		{
+			if (!visited[*i])
+			{
+				visited[*i] = true;
+				mq.push_back(*i);
+			}
+
+		}
+
+
+	}
+}
+
+
+
+
+
+
+
+
+void Graph:: DFS(int source, vector<int> &visited)
+{
+	visited[source] = true;
+	cout << source << " ";
+
+	list<int> :: iterator it;
+
+	for (it = adj[source].begin(); it != adj[source].end(); it++)
+	{
+		if (!visited[*it])
+			DFS(*it, visited);
+	}
+
+}
+
+
+
+
+
+int main()
+{
+
+	Graph g(4);
+	g.addEdge(0, 1);
+	g.addEdge(0, 2);
+	g.addEdge(1, 2);
+	g.addEdge(2, 0);
+	g.addEdge(2, 3);
+	g.addEdge(3, 3);
+	cout << "Contents of graph for node 2 is :" << "\n";
+
+
+	vector<int> visited(4, false);
+
+	g.DFS(1, visited);
+
+	return 0;
+}
