@@ -1,0 +1,96 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+#define pb push_back
+const int MOD = 1e9 + 7;
+#define R 5
+#define C 5
+
+
+bool isSafe(int mat[][C], int i, int j, vector<vector<bool>> visited)
+{
+
+    return (i >= 0 && i < R && j >= 0 && j < C && mat[i][j] == 1 && !visited[i][j]);
+}
+
+
+void bfs(int mat[][C], int i, int j, vector<vector<bool>> &visited )
+{
+    int xpath[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+    int ypath[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+    queue<pair<int, int>> mq;
+
+    visited[i][j] = true;
+    mq.push({i, j});
+
+
+    while (!mq.empty())
+    {
+        int p = mq.front().first;
+        int q = mq.front().second;
+        mq.pop();
+        for (int k = 0; k < 8; k++)
+        {
+            if ( isSafe(mat, p  + xpath[k], q + ypath[k], visited) )
+            {
+                visited[p + xpath[k]] [q + ypath[k]] = true;
+                mq.push({p + xpath[k], q + ypath[k]});
+            }
+
+        }
+
+    }
+}
+
+
+
+int countIslands(int mat[][C])
+{
+    vector<vector<bool>> visited(R, vector<bool>(C, false));
+    int count = 0;
+
+    for (int i = 0; i < R; i++)
+    {
+        for (int j = 0; j < C; j++)
+        {
+            if (!visited[i][j] && mat[i][j] == 1)
+            {
+                bfs(mat, i, j, visited);
+                count++;
+
+            }
+
+        }
+    }
+    return count;
+}
+
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    fastIO
+
+    int mat[][C] = { { 1, 1, 0, 0, 0 },
+        { 0, 1, 0, 0, 1 },
+        { 1, 0, 0, 1, 1 },
+        { 0, 0, 0, 0, 0 },
+        { 1, 0, 1, 0, 1 }
+    };
+
+    cout << countIslands(mat) << "\n";
+
+    return 0;
+}
+
+
+
+
+
