@@ -1,0 +1,123 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+#define pb push_back
+const int MOD = 1e9 + 7;
+
+#define R 6
+#define C 5
+
+void maxSumSubSquare(bool mat[R][C])
+{
+    int dp[R][C];
+
+    for (int i = 0; i < R; i++)
+    {
+        for (int j = 0; j < C; j++)
+        {
+            // It is used to put the same values of matrix of first row and first column in dp array
+            if (i == 0 || j == 0)
+                dp[i][j] = mat[i][j];
+
+            /*
+            Now why we checking for 1 is because we only want a square unit of maximum result.
+
+
+                Now in order to be a N x N square unit must be all filled to be 1s. 
+                
+                Now take the example of 
+
+                [1, 1, 1]
+                [1, 1, 1]
+                [1, 1, 0]
+
+
+                intialise a matrix dp with same values in first row and first column as in case of matrix
+
+                              0  1   2
+                      0      [1, 1, 1 ]
+                      1      [1,  ,   ]
+                      2      [1,  ,   ]
+
+                Now lets take the case  of index (1, 1)
+                now check wheter element at our original matrix is 1, It if one.
+                Then we basically need to find of minimum of its top, left, and left diagonal element
+
+                dp[1][1] = (1, 1, 1)
+                all are one so dp[i][j] = 1   + (we also add one to it, i will explain) 1
+                dp[1][1] = 2;
+
+                Now we have added 1, because in order for a  N x N matrix to be square, the element must be (N - 1).
+                For a 2*2 matrix, each element must be of size (n - 1).
+                Suppose any of the top, left, top-left is not of size(n - 1), then dp[i][j] will also be equal to size (N - 1).
+            */
+
+            else if (mat[i][j] == 1)
+                dp[i][j] =  min(dp[i - 1][j - 1 ],  min( dp[i][j - 1], dp[i - 1][j])) + 1;
+
+
+            // If it is not one , it fails our attempt of making that block of 1s square.
+
+            else
+                dp[i][j] = 0;
+        }
+    }
+
+
+    int maxM = INT_MIN;
+    int x, y;
+    for (int i = 0; i  < R ; i++)
+    {
+        for (int j = 0; j < C; j++)
+        {
+            if (dp[i][j] > maxM)
+            {
+                maxM = dp[i][j];
+                x = i;
+                y = j;
+
+            }
+        }
+    }
+
+
+    for (int i = x; i >= 0; i--)
+    {
+        for (int j = y; j >= 0; j--)
+        {
+            cout << mat[i][j] << " ";
+        }
+        cout << "\n";
+    }
+
+
+}
+
+
+
+
+
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    fastIO
+
+    bool mat[R][C] = {  {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 0},
+    };
+    maxSumSubSquare(mat);
+
+    return 0;
+}
+
+
+
+
+
