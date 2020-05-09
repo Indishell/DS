@@ -1,0 +1,106 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+#define pb push_back
+
+const int MOD = 1e9 + 7;
+
+int fillMatrix(vector<vector<int>> mat)
+{
+    queue<pair<int, int>> mq;
+    
+    for(int i = 0; i < mat.size(); i++)
+    {
+        for(int j =0 ; j < mat[i].size(); j++)
+        {
+            if(mat[i][j] == 1)
+                mq.push({i, j});
+        }
+    }
+    
+    int count =0;
+    
+    while(!mq.empty())
+    {
+        int size = mq.size();
+        
+        while(size--)
+        {
+            int i = mq.front().first;
+            int j = mq.front().second;
+            mq.pop();
+            
+            
+            if(j > 0  && mat[i][j - 1] == 0)
+            {
+                mat[i][j - 1] = 1;
+                mq.push({i, j - 1});
+            }
+            
+            if(i < mat.size() - 1 && mat[i + 1][j] == 0)
+            {
+                mat[i + 1][j] = 1;
+                mq.push({i + 1, j});
+            }
+            
+            if(j < mat.size() - 1 && mat[i][j + 1] == 0)
+            {
+                mat[i][j + 1] = 1;
+                mq.push({i, j + 1});
+            }
+            
+            if(i > 0 && mat[i - 1][j] == 0)
+            {
+                mat[i - 1][j] = 1;
+                mq.push({i - 1, j});
+            }
+            
+            if(i > 0 && j > 0 && mat[i - 1][j - 1] == 0)
+            {
+                mat[i - 1][j - 1] = 1;
+                mq.push({i - 1, j - 1});
+            }
+            
+            
+            if(i < mat.size() - 1 && j > 0 && mat[i + 1][j -1] == 0)
+            {
+                mat[i + 1][j - 1] = 1;
+                mq.push({i + 1, j - 1});
+            }
+            
+            if((i > 0) && (j < (mat.size() -1)) &&  
+                                mat[i-1][j+1] == 0) 
+            { 
+                mat[i-1][j+1] = 1; 
+                mq.push({i-1,j+1}); 
+            } 
+
+            if((i < (mat.size() -1)) && (j < (mat.size() -1)) &&  
+                                    mat[i+1][j+1] == 0) 
+            { 
+                mat[i+1][j+1] = 1; 
+                mq.push({i+1,j + 1}); 
+            }
+        }
+        
+        count++;
+    }
+    
+    return count - 1;
+}
+
+
+
+int main()
+{
+    vector<vector<int>> mat = {{0,0,0,0,0}, 
+                                {1,0,0,0,0}, 
+                                {0,0,0,0,0}, 
+                                {0,0,1,0,0}, 
+                                {0,0,0,1,0}};
+    
+    
+    cout<< fillMatrix(mat);
+}
