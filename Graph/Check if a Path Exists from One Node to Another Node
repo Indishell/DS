@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+#define pb push_back
+
+const int MOD = 1e9 + 7;
+
+
+void addEdge(vector<int> adj[], int u, int w)
+{
+    adj[u].push_back(w);
+}
+
+
+bool isConnected(vector<int> adj[], int src, int dest, vector<bool> &visited)
+{
+	queue<int> mq;
+	
+	if(src == dest)
+	    return true;
+
+
+	visited[src] =  true;
+	mq.push(src);
+
+	while (!mq.empty())
+	{
+		int u = mq.front();
+		mq.pop();
+
+		if (u == dest)
+			return true;
+
+		for (int i : adj[u] )
+		{
+			if (!visited[i])
+			{
+				visited[i] = true;
+				mq.push(i);
+			}
+		}
+	}
+	return false;
+}
+
+
+int main()
+{
+    int V = 8;
+    
+    vector<int> adj[V];
+    addEdge(adj, 0, 3);
+	addEdge(adj, 1, 0);
+	addEdge(adj, 1, 2);
+	addEdge(adj, 1, 4);
+	addEdge(adj, 2, 7);
+	addEdge(adj, 3, 4);
+	addEdge(adj, 3, 5);
+	addEdge(adj, 4, 3);
+	addEdge(adj, 4, 6);
+	addEdge(adj, 5, 6);
+	addEdge(adj, 6, 7);
+	
+	vector<bool> visited(V, false);
+	int src = 3 , dest = 7;
+
+	if (isConnected(adj, src, dest, visited))
+		cout << "Path Exists" << "\n";
+	else
+		cout << "No path Exists" << "\n";
+
+	return 0;
+}
