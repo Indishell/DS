@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base :: sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD  = 1000000007;
+
+
+
+void addEdge(vector<int> adj[], int v, int w)
+{
+	adj[v].push_back(w);
+}
+
+
+
+void DFS(vector<int> adj[], int s, int d, vector<vector<bool>> &tc)
+{
+	// Mark reacability from vertex s to vertex d as true
+	tc[s][d] = true;
+
+	// Find all vertices reachable through vertex d
+	for (int i : adj[d])
+	{
+		if (tc[s][i] == false)
+			DFS(adj, s, i, tc);
+	}
+}
+
+
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt" ,  "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	int V = 4;
+	vector<int> adj[V];
+
+	addEdge(adj, 0, 1);
+	addEdge(adj, 0, 2);
+	addEdge(adj, 1, 2);
+	addEdge(adj, 2, 0);
+	addEdge(adj, 2, 3);
+	addEdge(adj, 3, 3);
+
+	vector<vector<bool>> tc(V, vector<bool> (V, false));
+
+	for (int i = 0; i < V; i++)
+		DFS(adj, i, i, tc);
+
+
+	for (int i = 0; i < V; i++)
+	{
+		for (int j = 0; j < V; j++)
+		{
+			cout << tc[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	return 0;
+
+}
