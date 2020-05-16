@@ -62,6 +62,9 @@ int main()
 		cout << endl;
 	}
 
+	// Time Complexity is O(V * (V + E))
+	// Space is 2d Matrix for TC and extra stack space for dfs if we want to consider stack space.
+
 	return 0;
 
 }
