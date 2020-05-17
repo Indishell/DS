@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int countSubarrays(int A[], int N, int K)
+{
+	int currSum = 0;
+	int count = 0;
+	unordered_map<int, int> mp;
+  
+  
+	for (int i = 0; i < N; i++)
+	{
+    //current sum variable counts the sum at each iteration
+		currSum += A[i];
+    
+    //If current sum variable counts
+		if (currSum == K)
+			count++;
+
+   // If currSum = Y +  K  =>  Y = currSum - K , If (currSum - K) is found in map then it is 
+		if (mp.find(currSum - K) != mp.end())
+			count += mp[currSum - K];
+
+		mp[currSum]++;
+	}
+  
+	return count;
+}
+
+int main()
+{
+	fastIO
+	int A[] = {10, 2, -2, -20, 10};
+  //Sum      10  12  10  -10  0
+  
+	int N = sizeof(A) / sizeof(int);
+
+	int K = -10;
+
+	cout << countSubarrays(A, N, K);
+}
