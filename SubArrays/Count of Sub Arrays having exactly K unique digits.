@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+
+// O(N^2) Solution
+/*
+Count of Sub Arrays having exactly K unique digits.
+*/
+int countSubarrays(int A[], int N, int k)
+{
+	int count = 0;
+	unordered_map<int, int> mp;
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = i; j < N; j++)
+		{
+			mp[A[j]]++;
+
+			if (mp.size() == k)
+				count++;
+		}
+
+		mp.clear();
+	}
+	
+	return count;
+}
+
+//O(N) Solution
+
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input2.txt", "r", stdin);
+	freopen("output2.txt", "w", stdout);
+#endif
+
+    fastIO
+
+	int A[] =  {2, 1, 2, 1, 6};
+	int N = sizeof(A) / sizeof(A[0]);
+
+
+	int k = 2;
+	cout << countSubarrays(A, N, k);
+	
+}
