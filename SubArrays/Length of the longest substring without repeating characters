@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+
+
+int longestRept(string s)
+{
+    
+    int maxlen = 0;
+    
+    unordered_map<char, int> mp;
+    int N = s.size();
+    
+    int j = 0;
+    
+    int count = 0;
+    for(int i = 0; i < N; i++ )
+    {
+        // Keep Adding Elements in the map and increment a variable i 
+        mp[s[i]]++;
+        count++;
+        
+    
+    /*
+        Now, wheneveer a duplicate elements appear at map, start a 
+        pointerfrom start and start removing characters from it untill and 
+        unless count of any elememnt is less than or equal to 1, and j is 
+        less than i;
+        
+    */
+    
+        while(j < i && mp[s[i]] > 1)
+        {
+            mp[s[j]]--;
+            count--;
+            j++;
+        }
+
+    
+        maxlen = max(maxlen, i - j + 1);
+    }
+    
+    return maxlen;
+}
+
+
+
+int main()
+{
+    
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	fastIO
+	
+	int t;
+	cin>>t;
+	
+	while(t--)
+	{
+	    
+	    string s;
+	    cin>>s;
+	   
+        cout<< longestRept(s) << "\n";
+	}
+	
+	return 0;
+}
