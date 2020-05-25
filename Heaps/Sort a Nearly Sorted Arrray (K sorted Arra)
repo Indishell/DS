@@ -1,0 +1,150 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define end  <<"\n";
+#define ll long long
+
+int sortK(int A[], int n, int k)
+{
+
+	// Min Heap
+	priority_queue<int, vector<int> , greater<int> > pq;
+
+
+
+	// Take a min heap of size k and the top element of k sized heap will be minimum element, as it is sorted in its k range.
+
+
+	/*
+
+			2
+
+		3		6
+
+		Now, We have made a MInHeap of size k.
+
+
+		Now start traversing from k + 1 to end of array.
+
+		 Take a index variable to over write the array.
+
+		Algorithm.
+
+		1. Get the top element of the heap and push it in array
+
+
+		A = {2}
+
+		Now remove the Top element from the heap.
+
+		  _
+
+		3   6
+
+
+		Now, Push the next elment in the array as we are now in our loop
+
+
+		  3
+
+		6 	12
+
+
+		Repeat step 1.
+
+		Now A[] = {2, 3}
+
+		Now remove the Top element from the heap.
+
+
+		  _					6
+					 -->
+
+		6  12             11   12
+
+
+
+		Repeat step1.
+
+
+		A[] ={2, 3, 6}
+
+
+			8
+
+		 11    12
+
+
+		 A[] = {2, 3, 6 , 8}
+
+
+
+		Remove Top element
+
+		 11
+		   \
+		   12
+
+
+		  A[] = {2, 3, 6, 8, 11}
+
+
+		  _
+		  	\      -> (12)
+		  	12
+
+		A[] = {2, 3, 6, 8, 11, 12}
+	*/
+
+
+
+
+
+
+	for (int i = 0; i  < k; i++)
+		pq.push(A[i]);
+
+	int low = 0;
+
+	for (int i = k; i < n; i++)
+	{
+		A[low++] = pq.top();
+		pq.pop();
+
+		pq.push(A[i]);
+	}
+
+	while (!pq.empty())
+	{
+		A[low++] = pq.top();
+		pq.pop();
+	}
+
+}
+
+void printArray(int A[], int n)
+{
+	for (int i = 0 ; i < n; i++)
+		cout << A[i] << " ";
+}
+
+
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	fastIO
+
+	int A[] = {2, 6,  3, 12, 11, 8};
+	int n = sizeof(A) / sizeof(int);
+
+	int k = 3;
+	sortK(A, n, k);
+	printArray(A, n);
+
+}
