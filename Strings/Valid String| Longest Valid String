@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define  fastIO ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+
+
+bool isBalanced(string s)
+{
+	if (s.size() % 2 != 0)
+		return false;
+
+	stack<char> ms;
+
+
+	for (int i =  0; i < s.size(); i++)
+	{
+
+		if (s[i] == '(')
+			ms.push(')');
+
+		else if (s[i] == '[')
+			ms.push(']');
+
+		else if (s[i] == '{')
+			ms.push('}');
+
+
+		else
+		{
+
+			if (ms.empty() || ms.top() != s[i])
+				return false;
+
+
+			else
+				ms.pop();
+		}
+	}
+
+
+	return (ms.empty() ? true : false);	
+}
+
+
+
+int longestSub(string s)
+{
+	stack<int> ms;
+	ms.push(-1);
+
+
+	int res = 0;
+
+
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == '(')
+			ms.push(i);
+
+
+		else
+		{
+			ms.pop();
+
+			if (!ms.empty())
+				res = max(res, i - ms.top());
+
+
+			else
+				ms.push(i);
+		}
+
+	}
+
+	return res;
+
+}
+
+int  main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	fastIO;
+
+
+	int t;
+	cin >> t;
+
+	while (t--)
+	{
+		string s;
+		cin >> s;
+
+
+		cout << longestSub(s) << "\n";
+	}
+	return 0;
+}
