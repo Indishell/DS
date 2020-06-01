@@ -35,3 +35,54 @@ double getMedian(int A[], int B[], int m, int n)
 		return double((C[index / 2]  + C[index / 2 - 1]) / 2);
 }
 
+
+
+Method 2: TC: O(m + n), SC : O(1)
+
+
+
+int getMedian(int A[], int B[], int m, int n)
+{
+
+	int i = 0, j = 0;
+	int count;
+
+	int m1 = -1, m2 = -1;
+
+	if ((m + n) & 1)
+	{
+		for (count = 0; count <= (m + n) / 2; count++)
+		{
+			if (i !=  m && i != n)
+				m1 = (A[i] > B[j]) ? B[j++] : A[i++];
+
+			else if (i < m)
+				m1 = A[i++];
+
+			else
+				m1 = B[j++];
+		}
+
+		return m1;
+	}
+
+
+	else
+	{
+		for (count =  0; count <= (m + n) / 2; count++)
+		{
+			m2 = m1;
+
+			if (i != m && j != n)
+				m1 = (A[i] > B[j]) ? B[j++] : A[i++];
+
+			else if (i < m)
+				m1 = A[i++];
+
+			else
+				m1 = B[j++];
+		}
+
+		return (m1 + m2) / 2;
+	}
+}
