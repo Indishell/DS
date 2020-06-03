@@ -1,5 +1,6 @@
 
 Method 1 : Brute Force
+Time Complexity : O(N^3. Log(N))
 
 class Solution {
 public:
@@ -43,5 +44,53 @@ public:
 };
 
 
+=================================================================
+Method 2: Sliding Window
+Time Complexity : O(size of main string), O(26)*2 => O(26)
 
-Method 2:
+1. Make two arrays where we can store frequency for our string and our pattern.
+Line 77.
+
+Now start pushing characters into both the freq arrays.
+Maintain a window size of pattern and check if a both the arrays are equal or not.
+Make the pattern as fixed.
+Line 78-82
+
+Now as We have to traverse through the string, 
+
+* Start inserting next characaters in our freq array of strings
+Line 90
+* Start decrement frequency from the start of window. and keep on doing this until we go to end.
+
+Now , if at any point of timw when the frequency of boh string and pattern matches,  insert the starting index of window by calculating present index and subtracting window size from it and as well adding 1 to it. to get the starting index of the anagram.
+Check Line 91
+
+
+
+
+vector<int> res;
+
+	if (s.size() < p.size() || s.empty() || p.empty())
+		return res;
+
+	vector<int> ps(26, 0), ss(26, 0);
+
+	for (int i = 0; i  < p.size(); i++)
+	{
+		ps[p[i] - 'a']++;
+		ss[s[i] - 'a']++;
+	}
+
+	if (ps == ss)
+		res.push_back(0);
+
+	for (int i = p.size(); i < s.size(); i++)
+	{
+		ss[s[i] - 'a']++;
+		ss[s[i - p.size()] - 'a']--;
+
+		if (ss == ps)
+			res.push_back(i - p.size() + 1);
+	}
+
+	return res;
