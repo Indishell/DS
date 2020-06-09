@@ -1,0 +1,53 @@
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false);cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD  = 1000000007;
+
+string lcp(string str[], int n)
+{
+    int minLength = str[0].length();
+
+    for (int i = 1; i < n; i++)
+    {
+        if (str[i].length() < minLength)
+            minLength = str[i].length();
+    }
+    
+    
+
+
+    string res = "";
+
+    for (int i = 0 ; i  < minLength; i++)
+    {
+        char curr = str[0][i];
+
+        for (int j = 1; j < n; j++)
+        {
+            if (curr != str[j][i])
+                return res;
+        }
+
+        res.push_back(curr);
+    }
+    return res;
+}
+
+
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    string str[] = {"geeksforgeeks", "geeks", "geek"};
+    int n = sizeof(str) / sizeof(str[0]);
+
+    cout << lcp(str, n);
+}
