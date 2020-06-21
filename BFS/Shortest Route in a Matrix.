@@ -1,0 +1,111 @@
+#include<bits/stdc++.h>
+#include<string>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false);cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD  = 1000000007;
+
+#define N 10
+
+int row[] = { -1, 0, 0, 1 };
+int col[] = { 0, -1, 1, 0 };
+
+bool isSafe(int mat[N][N], int i, int j, bool visited[N][N])
+{
+	return (i >= 0  && j >= 0 &&  i < N && j < N && mat[i][j] == 1 && !visited[i][j]);
+}
+
+1. We can move to four directions, [left, right, top, bottom].
+2. Intially the source distance to itself is zero.
+3. We have used queue to perform a breadth traversal to find the shortest possible route to the destination
+
+4. I have used pair of pairs
+where pair.first.first and pair.first.second are denoted as (i, j) co-ordinates of a matrix which we want to process .
+5. We will also use a visited matrix equal to the size of the matrix to check where our path is moving to perform a shortest path.
+
+void bfs(int mat[N][N], int i, int j, int x, int y)
+{
+	bool visited[N][N];
+	memset(visited, false, sizeof(visited));
+
+	queue< pair< pair<int, int> , int> > mq;
+
+	visited[i][j] = true;
+
+	mq.push( { {i, j}, 0} );
+
+	int minimumDist = INT_MAX;
+
+
+	while (!mq.empty())
+	{
+		pair< pair<int, int>, int > temp = mq.front();
+		mq.pop();
+
+		int i = temp.first.first;
+		int j = temp.first.second;
+
+		int dist = temp.second;
+
+		if (i == x && j == y)
+		{
+			minimumDist = dist;
+			break;
+		}
+
+		for (int k = 0; k < 4; k++)
+		{
+			if (isSafe(mat, i + row[k], j + col[k], visited ))
+			{
+				visited[i + row[k]][j + col[k]] = true;
+				mq.push({ {i + row[k], j + col[k]}, dist + 1});
+			}
+		}
+	}
+
+
+	if (minimumDist != INT_MAX)
+	{
+		cout << "Shortest Path is of Length " << minimumDist  << "\n";
+	}
+	else
+	{
+		cout << "Destination cannot be reached" << "\n";
+	}
+}
+
+
+
+int main()
+{
+	fastIO
+
+#ifndef ONLINE_JUDGE
+	freopen("intput.txt",  "r", stdin);
+	freopen("output.txt",  "w", stdout);
+#endif
+
+	int mat[N][N] =
+	{
+		{ 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
+		{ 0, 1, 1, 1, 1, 1, 0, 1, 0, 1 },
+		{ 0, 0, 1, 0, 1, 1, 1, 0, 0, 1 },
+		{ 1, 0, 1, 1, 1, 0, 1, 1, 0, 1 },
+		{ 0, 0, 0, 1, 0, 0, 0, 1, 0, 1 },
+		{ 1, 0, 1, 1, 1, 0, 0, 1, 1, 0 },
+		{ 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+		{ 0, 1, 1, 1, 1, 1, 1, 1, 0, 0 },
+		{ 1, 1, 1, 1, 1, 0, 0, 1, 1, 1 },
+		{ 0, 0, 1, 0, 0, 1, 1, 0, 0, 1 },
+	};
+
+	bfs(mat, 0, 0, 7, 5);
+  
+  
+  
+  //Time Complexity is O(m*n)
+
+
+	return 0;
+}
