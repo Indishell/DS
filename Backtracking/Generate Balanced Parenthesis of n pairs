@@ -1,0 +1,21 @@
+
+class Solution:
+    
+    def generateParenthesis(self, n: int) -> List[str]:
+      res = []
+      
+      def generateValid(mystr, opencount, closecount):
+        
+        if opencount == 0 and  closecount == 0:
+          res.append(mystr)
+          return
+        
+        if opencount > 0:
+          generateValid(mystr + "(", opencount - 1, closecount)
+          
+        if  closecount > opencount:
+          generateValid(mystr  + ")", opencount, closecount - 1)
+          
+      generateValid("", n, n)
+      return res
+     
