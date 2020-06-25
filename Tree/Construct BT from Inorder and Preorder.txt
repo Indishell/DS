@@ -1,0 +1,74 @@
+#include <iostream>
+#include<map>
+using namespace std;
+
+
+class TreeNode
+{
+	public:
+		int data;
+		TreeNode *left, *right;
+		
+	TreeNode(int item)
+	{
+		this->data = item;
+		this->left = this->right = NULL;
+	}
+};
+
+
+TreeNode* constructTree(int in[], int pre[], int start, int end, map<int, int> mp)
+{
+	static int index = 0;
+	
+	if(start > end)
+		return NULL;
+	
+	TreeNode* root = new TreeNode(pre[index++]);
+	
+	if(start == end)	return root;
+	
+	// index of the root element which in every recursive case changes to its left and right;
+	// int pivot = search(in, n, root->data);
+	
+	int pivot = mp[root->data];
+	
+	root->left  =  constructTree(in, pre, start, pivot - 1, mp);
+	root->right =  constructTree(in, pre, pivot + 1, end, mp);
+	
+	return root;
+}
+
+TreeNode* buildWrapper(int in[], int pre[], int n)
+{
+	
+	map<int, int> mp;
+	
+	for(int i =0; i < n; i++)
+	{
+		mp[in[i]] = i;
+	}
+	
+	return constructTree(in, pre, 0, n - 1, mp);
+}
+
+void printInorder(TreeNode *root)
+{
+	if(root == NULL)	return;
+		
+	printInorder(root->left);
+	cout << root->data <<" ";
+	printInorder(root->right);
+}
+int main() 
+{
+    int in[] = { 9, 8, 4, 2, 10, 5, 10, 1, 6, 3, 13, 12, 7 }; 
+    int pre[] = { 1, 2, 4, 8, 9, 5, 10, 10, 3, 6, 7, 12, 13 }; 
+    int n = sizeof(in)/sizeof(in[0]); 
+  
+    TreeNode *root = buildWrapper(in , pre, n); 
+    printInorder(root);
+  
+    
+	return 0;
+}
