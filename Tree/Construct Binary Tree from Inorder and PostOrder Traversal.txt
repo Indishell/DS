@@ -1,0 +1,72 @@
+#include <iostream>
+#include<map>
+using namespace std;
+
+
+class TreeNode
+{
+	public:
+		int data;
+		TreeNode *left, *right;
+		
+	TreeNode(int item)
+	{
+		this->data = item;
+		this->left = this->right = NULL;
+	}
+};
+
+
+TreeNode* constructTree(int in[], int post[], int s,  int start, int end, map<int, int> mp)
+{
+	static int index = s;
+	
+	if(start > end)
+		return NULL;
+	
+	TreeNode* root = new TreeNode(post[index--]);
+	
+	if(start == end)	return root;
+	
+	// index of the root element which in every recursive case changes to its left and right;
+	// int pivot = search(in, n, root->data);
+	
+	int pivot = mp[root->data];
+
+	root->right =  constructTree(in, post, s , pivot + 1, end, mp);	
+	root->left  =  constructTree(in, post, s , start, pivot - 1, mp);
+
+	return root;
+}
+
+TreeNode* buildWrapper(int in[], int post[], int n)
+{
+	
+	map<int, int> mp;
+	
+	for(int i =0; i < n; i++)
+		mp[in[i]] = i;
+		
+		
+	return constructTree(in, post, n - 1,  0, n - 1, mp);
+}
+
+void preorder(TreeNode *root)
+{
+	if(root == NULL)	return;
+	
+	cout << root->data <<" ";		
+	preorder(root->left);
+	preorder(root->right);
+}
+int main() 
+{
+	int in[] = { 4, 8, 2, 5, 1, 6, 3, 7 }; 
+    int post[] = { 8, 4, 5, 2, 6, 7, 3, 1 };
+    int n = sizeof(in)/sizeof(in[0]);
+    
+    TreeNode *root = buildWrapper(in , post, n); 
+    preorder(root);
+    
+	return 0;
+}
