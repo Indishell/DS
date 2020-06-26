@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base :: sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD = 1000000009;
+
+#define r 4
+#define c 5
+
+
+int xdir[] = { -1, -1, -1,  0,  0,  1, 1, 1};
+int ydir[] = { -1,  0,  1, -1,  1, -1, 0, 1};
+
+
+bool visited[r][c];
+
+bool isSafe(int mat[][c], int i, int j)
+{
+
+	if (i >= 0 && i < r && j >= 0 && j < c && mat[i][j] == 1)
+		return true;
+
+	else
+		return false;
+}
+
+
+int bfs(int mat[][c], int i, int j)
+{
+
+	int cnt = 1;
+	memset(visited, false, sizeof(visited));
+
+	visited[i][j] = true;
+	queue< pair<int, int> > mq;
+	mq.push(make_pair(i, j));
+
+	while (!mq.empty())
+	{
+
+		int x = mq.front().first;
+		int y = mq.front().second;
+
+		mq.pop();
+
+		for (int k = 0; k < 8; k++)
+		{
+			if (isSafe(mat, x + xdir[k], y + ydir[k]) && !visited[ x + xdir[k] ][y + ydir[k]])
+			{
+				cnt++;
+				visited[x + xdir[k]][y + ydir[k]] =  true;
+				mq.push(make_pair(x + xdir[k], y + ydir[k]));
+			}
+		}
+
+	}
+	return cnt;
+}
+
+int solve(int mat[][c])
+{
+
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			if (mat[i][j] == 1)
+				return bfs(mat, i, j);
+		}
+	}
+
+}
+
+
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	int  mat[r][c] = { { 0, 0, 1, 1, 0 },
+		{ 0, 0, 1, 1, 0},
+		{ 0, 1, 0, 0, 0 },
+		{ 1, 0, 0, 0, 1 }
+	};
+
+
+	cout << solve(mat);
+
+}
