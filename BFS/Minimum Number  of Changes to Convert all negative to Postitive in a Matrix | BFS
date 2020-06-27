@@ -1,0 +1,98 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base :: sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD = 1000000009;
+
+#define r 3
+#define c 5
+
+static int xdir[] = {0, -1, 0, 1};
+static int ydir[] = { -1, 0, 1, 0};
+
+
+bool isValid(int mat[][c] , int i, int j)
+{
+	return (i >= 0 && i < r && j >= 0 && j < c && mat[i][j] < 0);
+}
+
+
+int minimumTime(int mat[][c])
+{
+	queue< pair<int, int> > mq;
+
+	bool visited[r][c] = {false};
+
+
+	int time = 0;
+
+	for (int i  = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			if (mat[i][j]  > 0)
+
+				mq.push(make_pair(i, j));
+
+		}
+	}
+
+	while (!mq.empty())
+	{
+
+		int size = mq.size();
+
+		while (size--)
+		{
+
+			int x = mq.front().first;
+			int y = mq.front().second;
+			mq.pop();
+
+			for (int k = 0; k < 4; k++)
+			{
+				 int p = x + xdir[k];
+				 int q = y  + ydir[k];
+
+				 // Perform Following checks then only enque indicies.
+				 // 1. Check if index (i, j) is a valid index and in the matrix.
+				 // 2. If 1st condition is fullfilled check if it is a negative value
+				 // 3. If 2nd condition is fullfilled, check if it not present in our visited matrix 
+
+				if (isValid(mat, p, q) && mat[p][q] < 0 && !visited[p][q])
+				{
+					// Change the value by multiply it by -1 and make it negative
+					mat[p][q] =  -1 * mat[p][q];
+
+					// enqueue (p, q) pair in queue
+					mq.push(make_pair(p, q));
+
+					// Mark (p, w) in visited as true
+					visited[p][q] = true;
+				}
+			}
+		}
+		// Checking how much passes it take, suppose if bfs exhausts its limit then we have to check for those indicies that have been enqueued recently and are not visited yet.
+		time++;
+	}
+
+	return (time - 1);
+}
+
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	int mat[r][c] = {
+		{ -8, -3, -2,  9, -7 },
+		{  2,  0,  0, -6,  0 },
+		{  0, -7, -3,  5, -4 }
+	};
+
+	cout << minimumTime(mat);
+}
