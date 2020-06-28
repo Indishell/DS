@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base :: sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD = 1000000009;
+
+
+class Node
+{
+public:
+	int data;
+	Node* left;
+	Node* right;
+
+	Node(int item)
+	{
+		this->data = item;
+		this->left = this->right = NULL;
+	}
+};
+
+bool isSumTreeRecursive(Node* root)
+{
+	if (root == NULL || root->left == NULL && root->right == NULL)
+		return true;
+
+	int l = (root->left != NULL) ? root->left->data : 0;
+	int r = (root->right != NULL) ? root->right->data : 0;
+
+	return (l + r == root->data && 	isSumTreeRecursive(root->left) && isSumTreeRecursive(root->right));
+}
+
+bool isSumTreeIterative(Node* root)
+{
+
+	if (root == NULL)
+		return true;
+
+	queue<Node*> mq;
+	mq.push(root);
+
+	while (!mq.empty())
+	{
+		Node* tmp = mq.front();
+		mq.pop();
+
+		if (tmp->left && tmp->right)
+		{
+			if (tmp->data != tmp->left->data + tmp->right->data)
+				return false;
+
+			mq.push(tmp->left);
+			mq.push(tmp->right);
+		}
+
+		else if (tmp->left == NULL && tmp->right != NULL)
+		{
+			if (tmp->data  != tmp->right->data)
+				return false;
+
+			mq.push(tmp->right);
+		}
+
+		else if (tmp->right == NULL && tmp->left != NULL)
+		{
+			if (tmp->data != tmp->left->data)
+				return false;
+
+			mq.push(tmp->left);
+		}
+	}
+
+	return true;
+}
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	Node* root = NULL;
+
+	root 				= new Node(10);
+	root->left			= new Node(8);
+	root->right 		= new Node(2);
+	root->left->left 	= new Node(3);
+	root->left->right 	= new Node(5);
+	root->right->right 	= new Node(2);
+
+	if (isSumTreeRecursive(root))
+		cout << "True" << "\n";
+	else
+		cout << "False" << "\n";
+
+	if (isSumTreeIterative(root))
+		cout << "True" << "\n";
+	else
+		cout << "False" << "\n";
+}
