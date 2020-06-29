@@ -1,0 +1,118 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base :: sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD = 1000000009;
+
+#define r 12
+#define c 10
+
+int visited[r][c];
+
+int xdir[4] = {-1 ,0 , 1, 0};
+int ydir[4] = {0  ,1 , 0,-1};
+
+
+bool isSafe(int mat[][c], int i, int j)
+{
+	return (i >= 0 && i < r && j >= 0 && j < c);
+}
+
+
+// This means that if a index value is valid and it is in bound.
+/*
+
+if there is a elemenet 1 for any index (i, j) , then search for left, right top bottom position and check whether they are safe too.
+it means that this index (i, j) is not safe, we have to choose some other path as there is a landmine
+
+
+*/
+
+bool isValid(int mat[][c], int i, int j)
+{
+	
+	if(isSafe(mat, i, j ) && mat[i][j] == 1)
+	{
+		
+		for(int k = 0; k < 4; k++)
+		{
+			int p = i + xdir[k];
+			int q = j + ydir[k];
+			
+			if(isSafe(mat, p, q) && mat[p][q] == 0)
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+
+int bfs(int mat[][c])
+{
+	memset(visited, false, sizeof(visited));
+	queue<pair<int, int>> mq;
+
+	int dist = 0;
+
+	for (int i = 0; i < r; i++)
+	{
+		if( isValid(mat, i, 0) ) 
+		{
+			mq.push({i, 0});
+			visited[i][0] = true;
+		}
+	}
+
+
+	while (!mq.empty())
+	{
+		int size = mq.size();
+		
+		while(size--)
+		{
+			int x = mq.front().first;
+			int y = mq.front().second;
+	
+			if (y == c - 1)
+				return dist;
+				
+			mq.pop();
+
+
+			for (int k = 0; k < 4; k++)
+			{
+				int p = x + xdir[k];
+				int q = y + ydir[k];
+	
+				if (isValid(mat, p, q) && !visited[p][q])
+				{
+					visited[p][q] = true;
+					mq.push({p, q});
+				}
+			}
+		}
+		dist++;
+
+	}
+}
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	int mat[r][c];
+
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+			cin >> mat[i][j];
+	}
+
+	cout << bfs(mat);
+}
