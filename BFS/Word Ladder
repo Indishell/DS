@@ -1,0 +1,81 @@
+
+Problem Link :  https://leetcode.com/problems/word-ladder/
+Algorithm:
+            Line 30 - 44 is the main thing here.
+            Please read if facing difficulty in understanding problem
+            /*
+            Initial Condition : If our target string is not present in our vector of strings, Simply return 0 or false.
+            
+            Take a Hasmap with string as key and boolean as value and mark starting word as true.
+            map<string, bool> mp;
+            mp[start] = true;
+            
+            1. Suppose we are at a word hit and we have to go to next word and the next word should have only one character different from our present string.
+            We wil iterate over our present string and then from fist character, we keep on trying all the possible solutions,
+            by putting character from a-z at every ith index, we change our index to characte from a - z for our size of string.
+                        
+            2. If we found a string with one character different, we push that string in our queue and update dist by 1 and also mark this found string as true
+            and now we don't need to search for the same string.
+            
+            3. On popping string, if we found that our string is equal to the target string, return  the distance.
+            
+            
+            4. If after trying we tried each and every combination ,  we can't find our target string, then return 0
+
+
+
+
+
+class Solution {
+public:
+    int ladderLength(string start, string target, vector<string>& wordList) 
+    {
+
+        unordered_set<string> D(wordList.begin(), wordList.end());
+        unordered_map<string, bool> mp;
+      
+      	if (D.find(target) == D.end())
+          return 0;
+
+        queue<pair<string, int>> mq;
+        mq.push({start, 1});
+        mp[start] = true;
+
+
+        while (!mq.empty())
+        {
+
+          string temp = mq.front().first;
+          int dist = mq.front().second;
+
+          if(temp == target)
+            return dist;
+          mq.pop();
+          
+          
+           
+            */
+
+              for(int i = 0; i < temp.size(); i++)
+              {
+                    char ch = temp[i];
+
+                    for(char c = 'a'; c <= 'z'; c++)
+                    {
+                          temp[i] = c;
+
+                          if(D.find(temp) != D.end() && mp[temp] == false)
+                          {
+                            mq.push({temp, dist + 1});
+                            mp[temp] = true;
+                          }
+                    }
+                    temp[i] = ch;
+                }
+
+        }
+
+	    return 0;
+        
+    }
+};
