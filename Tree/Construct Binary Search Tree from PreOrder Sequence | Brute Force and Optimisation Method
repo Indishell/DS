@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base :: sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+const ll MOD = 1000000009;
+
+class TreeNode
+{
+public:
+	int val;
+	TreeNode *left, *right;
+
+	TreeNode(int item)
+	{
+		this->val = item;
+		this->left = this->right = NULL;
+	}
+};
+
+TreeNode* constructTree(int post[], int low, int high, int size)
+{
+	static int index = size - 1;
+
+	if(low > high)
+		return NULL;
+		
+	TreeNode* root = new TreeNode(post[index]);
+	index -= 1;
+	
+	int i;	
+	for(i = high; i >= low; i--)
+	{
+		if(post[i] < root->val)
+			break;
+	}
+	
+	root->right = constructTree(post, i + 1, high - 1, size);
+	root->left = constructTree(post, low, i, size);
+	
+	return  root;
+}
+
+void inorder(TreeNode* root)
+{
+	if(root == NULL)
+		return;
+		
+	inorder(root->left);
+	cout<< root->val << " ";
+	inorder(root->right);
+}
+
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	int post[] = {1, 7, 5, 50, 40, 10}; 
+    int n = sizeof(post)/sizeof(post[0]); 
+  
+    TreeNode *root = constructTree(post, 0, n - 1, n);
+	inorder(root);
+}
