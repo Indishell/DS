@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long int
+
+#define pb push_back
+const ll MOD  = 1e9 + 7;
+
+vector<int> v;
+
+#define r 2
+#define c 4
+
+void printVector(vector<int> &v)
+{
+    for (int i = 0; i < v.size(); i++)
+        cout << v[i] << " ";
+    cout << "\n";
+}
+
+int count = 0;
+void printPaths(int mat[r][c], int i, int j)
+{
+    if ( i < 0 || i > r || j < 0 || j > c )
+        return;
+
+    if (i == r - 1 && j == c - 1)
+    {
+         v.pb(mat[i][j]);
+         printVector(v);
+         v.pop_back();
+        return;
+    }
+
+     v.pb(mat[i][j]);
+
+    printPaths(mat, i + 1, j);
+    printPaths(mat, i, j + 1);
+    
+    v.pop_back();
+}
+
+int main()
+{
+
+
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int mat[r][c] = {
+        {1, 2, 3, 7},
+        {4, 5, 6, 8}
+    };
+
+    printPaths(mat, 0, 0);
+}
+
