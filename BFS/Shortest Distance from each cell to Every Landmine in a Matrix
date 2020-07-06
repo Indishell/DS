@@ -1,0 +1,108 @@
+// https://www.techiedelight.com/find-shortest-distance-every-cell-landmine-maze/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long int
+
+#define pb push_back
+const ll MOD  = 1e9 + 7;
+
+vector<int> v;
+
+#define r 6
+#define c 5
+int row[] = {0, -1, 0, 1};
+int col[] = { -1, 0, 1, 0};
+
+int result[r][c];
+
+
+// This point is important beause we only want to see those elments in mat , which are 'O', and their corresponding element in the resultant matrix .
+Algorithm :
+
+1. Push all indicies of mat (i, j) and distance 0 where mat[i][j] == 'M' , 
+M means mmine and also take a arbitrary matrix and update corresponding index as  0 in the matrix and set all other eleents to 0.
+We want to find shortest distance from each valid index to 'M'.
+
+we will only process those nodes which are mat[i][j] == 'O' and their corresponding index is -1;
+
+bool isValid(char mat[][c], int i, int j,  int result[][c])
+{
+    return (i >= 0 && i < r && j >= 0 && j < c && mat[i][j] == 'O' && result[i][j] == -1);
+}
+
+void bfs(char mat[][c])
+{
+
+    queue< pair< pair<int, int> , int> > mq;
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c;  j++)
+        {
+            if (mat[i][j] == 'M')
+            {
+                mq.push({ {i, j}, 0});
+                result[i][j] = 0;
+            }
+            else
+                result[i][j] = -1;
+        }
+    }
+
+    while (!mq.empty())
+    {
+    	pair<pair<int, int>, int> temp = mq.front();
+        mq.pop();
+        
+        int p = temp.first.first;
+        int q = temp.first.second;
+       
+        int dist = temp.second;
+
+
+        for (int k = 0; k < 4; k++)
+        {
+
+            if (isValid(mat, p + row[k], q + col[k], result))
+            {
+                result[p + row[k]][q + col[k]] = dist + 1;
+                mq.push( { {p + row[k], q + col[k] } , dist + 1} );
+            }
+
+        }
+    }
+}
+
+
+int main()
+{
+
+
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    char mat[][c] = {
+        {'O', 'M', 'O', 'O', 'X'},
+        {'O', 'X', 'X', 'O', 'M'},
+        {'O', 'O', 'O', 'O', 'O'},
+        {'O', 'X', 'X', 'X', 'O'},
+        {'O', 'O', 'M', 'O', 'O'},
+        {'O', 'X', 'X', 'M', 'O'}
+    };
+
+    bfs(mat);
+    
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+            cout << result[i][j] << " ";
+
+        cout << "\n";
+    }
+}
+
