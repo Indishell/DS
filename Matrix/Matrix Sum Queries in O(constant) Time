@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long int
+
+#define pb push_back
+const ll MOD  = 1e9 + 7;
+
+#define M 4
+#define N 5
+int aux[M][N];
+
+void preProcess(int mat[M][N])
+{
+
+    for (int i = 0; i < N; i++)
+        aux[0][i] = mat[0][i];
+
+
+    for (int i = 1; i < M; i++)
+    {
+        for (int j = 0; j < N; j++)
+            aux[i][j] = mat[i][j] + aux[i - 1][j];
+    }
+
+    for (int i = 0; i < M; i++)
+    {
+        for (int j = 1; j < N; j++)
+            aux[i][j] = aux[i][j] +  aux[i][j - 1];
+    }
+}
+
+int sumQuery(int x1, int y1, int x2,  int y2)
+{
+    int result = aux[x2][y2];
+
+    if (x1 > 0)
+        result = result - aux[x1 - 1][y2];
+
+    if (y1 > 0)
+        result = result - aux[x2][y1 - 1];
+
+
+    if (x1 > 0 && y1 > 0)
+        result = result +  aux[x1 - 1][y1 - 1];
+
+    return result;
+}
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int mat[M][N] = {
+        {1, 2, 3, 4, 6},
+        {5, 3, 8, 1, 2},
+        {4, 6, 7, 5, 5},
+        {2, 4, 8, 9, 4}
+    };
+    preProcess(mat);
+
+    int k = 0;
+    cout << "Query " << ++k <<  " : "  <<  sumQuery(2, 2, 3, 4) << "\n";
+    cout << "Query " << ++k  << " : "  <<  sumQuery(0, 0, 1, 1) << "\n";
+    cout << "Query " << ++k  << " : "  << sumQuery(1, 2, 3, 3) << "\n";
+}
+
