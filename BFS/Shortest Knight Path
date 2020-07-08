@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long int
+
+#define pb push_back
+const ll MOD  = 1e9 + 7;
+
+// Knight Moves
+int dx[] = { -2, -1, 1, 2, 2, 1, -1, -2};
+int dy[] = {1, 2, 2, 1, -1, -2, -2, -2};
+
+#define r 30
+#define c 30
+
+bool visited[r][c];
+
+bool isValid(int i, int j)
+{
+	return (i >= 0 && i < r && j >= 0 && j < c);
+}
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	memset(visited, false, sizeof(visited));
+	
+	queue< pair< pair<int, int>, int >  > mq;
+	
+	int start = 1, end = 1;
+	
+	mq.push({{start, end}, 0});
+	visited[start][end] = true;
+	
+	int t1 = 29, t2 = 29;
+
+	while (!mq.empty())
+	{
+		pair< pair<int, int>, int> temp = mq.front();
+		int p = temp.first.first;
+		int q = temp.first.second;
+
+		int dist =  temp.second;
+		
+		mq.pop();
+
+		if (p == t1 && q == t2)
+		{
+			cout<< dist;
+			break;
+		}
+
+		for (int k = 0; k < 8; k++)
+		{
+			int x = p + dx[k];
+			int y = q + dy[k];
+
+			if (isValid(x, y) && !visited[x][y])
+			{
+				visited[x][y] = true;
+				mq.push({{x, y} , dist + 1});
+			}
+		}
+	}
+
+}
