@@ -1,0 +1,84 @@
+  #include<bits/stdc++.h>
+	using namespace std;
+
+	#define ll long long
+	const int MOD = 1e9 + 7;
+
+	#define r 5
+	#define c 5
+
+	class TreeNode
+	{
+	public:
+		int data;
+		TreeNode *left, *right, *next;
+
+		TreeNode(int item)
+		{
+			data = item;
+			left = right =  next = NULL;
+		}
+	};
+
+  1 line change between Inorder Successor and Inorder Predecessor
+	// Populate Inorder Succesoor of Binary Search Tree
+	void populate(TreeNode* root, TreeNode* &prev)
+	{
+		if (root == NULL)
+			return;
+
+		populate(root->right, prev);
+
+		if (prev != NULL)
+			root->next = prev;
+
+		prev = root;
+
+		populate(root->left, prev);
+	}
+
+
+	// Populate Inorder Predecessor of Binary Search Tree
+	void populate(TreeNode* root, TreeNode* &prev)
+	{
+		if (root == NULL)
+			return;
+
+		populate(root->left, prev);
+
+		if (prev != NULL)
+			root->next = prev;
+
+		prev = root;
+
+		populate(root->right, prev);
+	}
+
+
+
+
+	int main()
+	{
+
+	#ifndef ONLINE_JUDGE
+		freopen("intput.txt", "r", stdin);
+		freopen("output.txt", "w", stdout);
+	#endif
+
+		TreeNode* root = new TreeNode(10);
+		root->left = new TreeNode(8);
+		root->right = new TreeNode(12);
+		root->left->left = new TreeNode(3);
+
+		TreeNode *prev = NULL;
+		populate(root, prev);
+
+		while (prev != NULL)
+		{
+			cout << "Next of " << prev->data << " is " << ( (prev->next) ? prev->next->data : 0) << "\n";
+
+			prev = prev->next;
+		}
+
+		return 0;
+	}
