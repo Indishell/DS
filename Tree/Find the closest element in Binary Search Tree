@@ -1,0 +1,86 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+const int MOD = 1e9 + 7;
+
+#define r 5
+#define c 5
+
+class TreeNode
+{
+public:
+	int data;
+	TreeNode *left, *right, *next;
+
+	TreeNode(int item)
+	{
+		data = item;
+		left = right =  next = NULL;
+	}
+};
+
+void inorder(TreeNode* root)
+{
+	if (root == NULL)
+		return;
+
+	inorder(root->left);
+	cout << root->data << " ";
+	inorder(root->right);
+}
+
+void floorCeil(TreeNode* root, int key, TreeNode* &floor, TreeNode* &ceil)
+{
+	if (root == NULL)
+		return;
+
+	if (root->data == key)
+	{
+		floor = root;
+		ceil = root;
+		return ;
+	}
+
+	else if (root->data > key)
+	{
+		ceil = root;
+		floorCeil(root->left, key, floor, ceil);
+	}
+	else
+	{
+		floor = root;
+		floorCeil(root->right, key, floor, ceil);
+	}
+}
+
+int main()
+{
+#ifndef ONLINE_JUDGE
+	freopen("intput.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	TreeNode* root 				= new TreeNode(9);
+	root->left			    	= new TreeNode(4);
+	root->right   				= new TreeNode(17);
+	root->left->left 			= new TreeNode(3);
+	root->left->right 			= new TreeNode(6);
+	root->left->right->left 	= new TreeNode(5);
+	root->left->right->right 	= new TreeNode(7);
+	root->right->right 			= new TreeNode(22);
+	root->right->right->left 	= new TreeNode(20);
+
+	int key = 4;
+	TreeNode *floor = NULL , *ceil = NULL;
+	floorCeil(root, key, floor, ceil);
+
+	int ans = 0;
+	if (abs(floor->data - key) <= abs(ceil->data - key))
+		ans = floor->data;
+
+	else if (abs(floor->data > key) >= abs(ceil->data > key))
+		ans  = ceil->data;
+
+	cout << ans << "\n";
+}
