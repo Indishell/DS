@@ -1,0 +1,81 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define pb push_back
+const int MOD = 1e9 + 7;
+
+#define M 26
+
+void dfs(vector<int> adj[], vector<bool> &visited, int u)
+{
+	visited[u] = true;
+	
+	
+	for(int child : adj[u])
+	{
+		if(!visited[child])
+			dfs(adj, visited, child);
+	}
+}
+
+bool isConnected(vector<int> adj[], vector<bool> &mark, int s)
+{
+	vector<bool> visited(M, false);
+	dfs(adj, visited, s);
+
+	for (int i = 0; i < M; i++)
+	{
+		if (mark[i] && !visited[i])
+			return false;
+	}
+	return true;
+}
+
+bool isPossible(string s[], int n)
+{
+	vector<int> adj[M];
+
+	vector<bool> mark(M, false);
+	vector<int> in(M, 0), out(M, 0);
+
+
+	for (int i = 0; i < n;  i++)
+	{
+		int f =  s[i].front() - 'a';
+		int l = s[i].back() - 'a';
+
+		mark[f] = mark[l] = true;
+
+		in[l]++;
+		out[f]++;
+
+		adj[f].pb(l);
+	}
+
+
+	for (int i = 0; i < M; i++)
+		if (in[i] != out[i])
+			return false;
+
+
+	return isConnected(adj, mark, s[0].front() - 'a');
+}
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+	freopen("intput.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+
+	string s[] = {"ab", "bc", "cd", "de", "ed", "da"};
+	int n = sizeof(s) / sizeof(s[0]);
+
+	if (isPossible(s, n) == false)
+		cout << "Ordering Not possible" << "\n";
+
+	else
+		cout << "Ordering is Possible" << "\n";
+}
