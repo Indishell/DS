@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void printCombinaions(char pattern[], int i)
+{
+	if(i == strlen(pattern))
+	{
+		cout << pattern << "\n";
+		return;
+	}
+	
+	if(pattern[i] == '?')
+	{
+		pattern[i] = '0';
+		printCombinaions(pattern, i + 1);
+		
+		
+		pattern[i] ='1';
+		printCombinaions(pattern, i + 1);
+		
+		pattern[i] = '?';
+
+	}
+	
+	else
+		printCombinaions(pattern, i + 1);
+		
+}
+
+
+
+
+int main() {
+	
+	char pattern[]= "1?11?00?1?";
+	
+	printCombinaions(pattern, 0);
+	return 0;
+}
