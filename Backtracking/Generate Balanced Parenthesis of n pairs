@@ -19,3 +19,40 @@ class Solution:
       generateValid("", n, n)
       return res
      
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<string> v;
+
+void permute(string p, int open, int close)
+{
+	if(open == 0 && close == 0)
+	{
+		v.push_back(p);
+		return;
+	}
+	
+	if(open > 0)
+		permute(p + "(",  open - 1, close);
+		
+	if(close > 0 && close > open)
+		permute(p + ")", open, close - 1);
+}
+
+int main() {
+	
+	int n = 4;
+
+	if(n % 2 == 0)
+		permute("", n/2, n/2);
+	else
+		cout << "Invalid Length";
+		
+	for(string s: v)
+		cout << s << "\n";
+	return 0;
+}
