@@ -1,3 +1,32 @@
+
+Recursion + Memoisation
+
+ll solve(ll coins[], ll n, ll amount) 
+{
+	if(amount == 0)
+		return 0;
+		
+	if(amount < 0)
+		return INT_MAX;
+		
+	if(dp[amount] != -1)
+		return dp[amount];
+	
+	ll ans = INT_MAX;
+		
+	for(int i = 0; i < n; i++)
+	{
+		ll result = solve(coins, n, amount - coins[i]);
+		
+		if(result != INT_MAX)
+			ans = min(ans, result + 1);
+	}
+	
+	return dp[amount] = ans;
+}
+
+
+-----------------------------------------------------------------------------------------------------------------
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) 
