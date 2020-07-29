@@ -1,0 +1,66 @@
+----------------------------------------------------------------------------------------------------------------------------
+// Memoization : Time Complexity is O(N*sum) 
+class Solution {
+public:  
+    long dp[202][10002];
+  
+  long solve(vector<int> &A, long n, long sum)
+  {
+    if (n <= 0 && sum != 0)
+        return 0;
+
+    if (sum == 0)
+        return 1;
+
+    if (sum < 0)
+        return 0;
+
+    if (dp[n][sum] != -1)
+        return dp[n][sum];
+
+    if (A[n - 1] > sum)
+    	return dp[n][sum] =  solve(A, n - 1, sum);
+
+    // It means, Subtracting the current element from the sum and also reducing the size
+    // It means, ignoring the present element and iterating the element and reducing the size.
+
+    return dp[n][sum] =  solve(A, n - 1, sum - A[n - 1]) || solve(A, n - 1, sum);
+
+  }
+
+  
+    bool canPartition(vector<int>& A) 
+    {
+      int n = A.size();
+      if(n < 2)
+        return false;
+      
+      memset(dp, -1, sizeof(dp));
+      int sum = 0;
+      
+      for(int i = 0; i < n; i++)
+        sum += A[i];
+            
+      if(sum % 2 != 0)
+        return false;
+      
+      else
+      {
+        if(  solve(A, n, sum/2) == 1)
+          return true;
+      }
+      
+      return false;
+      
+    }
+};
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+//Method 2 - Dynammic Programming
+
+
+
+
