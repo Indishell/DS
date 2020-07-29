@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int dp[1002][1002];
+
+// Time Complexity is O(n*sum)
+
+int solve(int A[], int n, int sum)
+{
+	if(dp[n][sum] != -1)
+		return dp[n][sum];
+	
+	if(sum == 0)
+		return 1;
+		
+	if(sum < 0)
+		return 0;
+		
+	if(n == 0)
+		return 0;
+		
+	if(A[n - 1] > sum)
+		return dp[n][sum] =  solve(A, n - 1, sum);
+		
+	return dp[n][sum] = solve(A, n - 1, sum - A[n - 1]) + solve(A, n - 1, sum);
+}
+
+int main() 
+{
+	int A[] = {1, 2, 3, 4, 5};
+	int n = sizeof(A)/sizeof(int);
+	int sum =  7;
+	
+	memset(dp, -1, sizeof(dp));
+	cout << solve(A, n, sum);
+	
+	return 0;
+}
