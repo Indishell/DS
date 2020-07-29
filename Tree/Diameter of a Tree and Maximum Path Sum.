@@ -1,0 +1,63 @@
+1. Code for Diameter of a Tree.
+class Solution {
+public:    
+    int height(TreeNode* root, int &result)
+    {
+      if(root == NULL)
+          return 0;
+      
+      int left = height(root->left, result);
+      int right = height(root->right, result);     
+      
+      int d = max(left, right) + 1;
+      result = max(result, left + right);
+      
+      return d;
+      
+    }
+ 
+    int diameterOfBinaryTree(TreeNode* root) {
+      
+      if(root == NULL)
+          return 0;
+      
+      int result = 0;
+      height(root, result);
+      
+      return result;
+    }
+};
+
+2. Maximum Path Sum.
+
+
+class Solution {
+public:
+    
+    int solve(TreeNode* root, int &result)
+    {
+      if(!root)
+        return 0;
+      
+      int left = solve(root->left, result);
+      int right = solve(root->right, result);
+      
+      int maximum_straight_path = max( max(left, right) + root->val, root->val);
+      int maximum_node_path = max(maximum_straight_path, left + right + root->val);
+      result = max(result, maximum_node_path);
+      
+      return maximum_straight_path;
+    }
+  
+    int maxPathSum(TreeNode* root) 
+    {
+      
+      if(!root)
+        return 0;
+      
+      int result = INT_MIN;
+      solve(root, result);
+      
+      return result;
+    }
+};
