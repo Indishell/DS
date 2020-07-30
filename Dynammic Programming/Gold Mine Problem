@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define take_input freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+const ll MOD = 1e9 + 7;
+
+// int dp[1002][1002];
+
+#define r 4
+#define c 4
+
+int solve(int mat[][c])
+{
+	int dp[r][c];
+	memset(dp, -1, sizeof(dp));
+
+
+	// dp[0][0] = mat[0][0];
+
+	for (int i = 0; i < r; i++)
+		dp[i][0] = mat[i][0];
+
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 1; j < c; j++)
+		{
+			if (i == 0)
+				dp[i][j] = dp[i][j - 1] + max(mat[i][j], mat[i + 1][j]);
+
+			else if (i == r - 1)
+				dp[i][j] = dp[i][j - 1] + max(mat[i - 1][j], mat[i][j]);
+
+			else
+				dp[i][j] = dp[i][j - 1] + max(mat[i - 1][j], max(mat[i][j], mat[i + 1][j] ));
+		}
+	}
+
+	// for (int i = 0; i < r; i++)
+	// {
+	// 	for (int j = 0; j < c; j++)
+	// 		cout << dp[i][j] << " ";
+	// 	cout << "\n";
+	// }
+
+	int mxm = INT_MIN;
+
+	for (int i = 0; i < r; i++)
+		mxm = max(mxm, dp[i][c - 1]);
+
+	return mxm;
+}
+
+int main()
+{
+	take_input
+
+	int mat[r][c] = {
+		{10, 33, 13, 15},
+		{22, 21, 04, 1},
+		{5, 0, 2, 3},
+		{0, 6, 14, 2}
+	};
+
+	cout << solve(mat);
+
+	return 0;
+}
