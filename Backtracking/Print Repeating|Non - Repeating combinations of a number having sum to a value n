@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> v;
+
+void printVector(vector<int> &v)
+{
+	for(int i =0; i < v.size(); i++)
+		cout << v[i] <<" ";
+		
+	cout << "\n";
+}
+
+// No repetitions.
+void solve(int n, int i)
+{
+	if(n == 0)
+	{
+		printVector(v);
+		return;
+	}
+	
+	for(int j  = i; j <= n; j++) 
+	{
+		v.push_back(j);
+		
+		solve(n - j, j + 1);
+		
+		v.pop_back();
+	}
+}
+
+// Repetitions
+void solve(int n, int i)
+{
+	if(n == 0)
+	{
+		printVector(v);
+		return;
+	}
+	
+	for(int j = i; j <= n; j++) {
+		
+		v.push_back(j);
+		solve(n - j, j);
+		v.pop_back();
+	}
+	
+}
+
+int main() 
+{
+	int n = 5;
+	solve(n, 1);
+	
+	return 0;
+}
