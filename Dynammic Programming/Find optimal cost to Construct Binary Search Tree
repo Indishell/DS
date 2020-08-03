@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// A variation of MCM (Matrix Chain Multiplication)
+
+int dp[202][202][202];
+
+int solve(int freq[], int i, int j, int level) {
+	
+	if(i > j)
+		return 0;
+		
+		
+	if(dp[i][j][level] != -1)
+		return dp[i][j][level];
+		
+	int minCost = INT_MAX;
+	
+	for(int k = i; k <= j; k++) {
+		
+		int leftCost = solve(freq, i, k - 1, level + 1);
+		int rightCost = solve(freq, k + 1, j, level + 1);
+		
+		int cost = freq[k]*level + leftCost +  rightCost;
+		
+		if(cost < minCost) {
+			minCost  = cost;
+		}
+	}
+	
+	return  dp[i][j][level] =  minCost;
+}
+
+int main() 
+{
+	int freq[] = {25, 10, 20};
+	int n = sizeof(freq)/sizeof(int);
+	
+	memset(dp, -1, sizeof(dp));
+	cout << solve(freq, 0, n - 1, 1);
+	return 0;
+}
