@@ -1,0 +1,120 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+Time Complexity : O(ElogE + ElogV)
+//ElogE for sorting Edges
+// ELogV For UnionFind Operation and for E edges having V vertices 
+
+struct node {
+	int parent;
+	int rank;
+};
+
+struct Edge {
+	int src;
+	int dest;
+	int wt;
+};
+
+vector<Edge> mst;
+vector<node> dsuf;
+
+
+int find(int x) {
+	
+	if(dsuf[x].parent == -1)
+		return x;
+		
+	else
+		return dsuf[x].parent = find(dsuf[x].parent);
+}
+
+bool comp(Edge a, Edge b)
+{
+	return a.wt < b.wt;
+}
+
+
+void unionOP(int fromP, int toP) 
+{
+	// fromP has higher rank
+	if(dsuf[fromP].rank > dsuf[toP].rank)
+		dsuf[toP].parent = fromP;
+		
+	// toP has higher rank 
+	else if(dsuf[fromP].rank < dsuf[toP].rank)
+		dsuf[fromP].parent = toP;
+	
+	else
+	{
+		// Both has same rank and anyone can be made parent.
+		
+		dsuf[fromP].parent = toP;
+		dsuf[toP].rank += 1;
+	}
+}
+
+
+void kruskal(vector<Edge> &edgeList, int V, int E) 
+{
+	sort(edgeList.begin(), edgeList.end(), comp);
+	
+	int i= 0, j = 0;
+	
+	while(i < V - 1 && j < E)
+	{
+		int fromP = find(edgeList[i].src);
+		int toP = find(edgeList[i].dest);
+		
+		if(fromP == toP)
+		{
+			j++;
+			continue;
+		}
+		
+		unionOP(fromP, toP);
+		mst.push_back(edgeList[j]);
+		i++;
+	}
+}
+
+void printMST(vector<Edge> &mst)
+{
+	for(auto p : mst)
+		cout << "src : " << p.src << " dest: " << p.dest << " wt: " << p.wt << "\n"; 
+}
+
+int main() 
+{
+	int E, V;
+	cin >> E >> V;
+	
+	dsuf.resize(V);
+	
+	for(int i =0; i < V; i++)
+	{
+		dsuf[i].parent = -1;
+		dsuf[i].rank = 0;
+	}
+	
+	vector<Edge> edgeList;
+	Edge temp;
+	
+	for(int i =0; i < E; i++) 
+	{
+		int src, dest, wt;
+		cin >> src >> dest >> wt;
+		
+		temp.src = src;
+		temp.dest = dest;
+		temp.wt = wt;
+		
+		edgeList.push_back(temp);	
+	}
+	
+	kruskal(edgeList, V, E);
+	printMST(mst);
+	
+	return 0;
+}
