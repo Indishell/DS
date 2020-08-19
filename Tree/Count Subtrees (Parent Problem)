@@ -1,0 +1,65 @@
+
+/*
+1. Count subtrees with given sum
+2. Count subtrees that lie in range [L, R]
+3. Count subtree that are duplicate (Can be done using inordere Traversal as well)
+4. Largest Subtree Sum
+
+*/
+
+
+//Radhe krishna ki jytoi alokik
+#include <bits/stdc++.h>
+using namespace std;
+
+map<int, int> mp;
+
+class Node
+{
+public:
+	int data;
+	Node *left, *right;
+
+	Node(int item)
+	{
+		data = item;
+		left = right = NULL;
+	}
+};
+
+
+int dfs(Node* root) {
+
+	if (root == NULL)
+		return 0;
+		
+	int l = dfs(root->left);
+	int r = dfs(root->right);
+
+	int temp = root->data + l+ r;
+
+	mp[temp]++;
+
+	return temp;
+}
+
+
+int main()
+{
+	Node* root = NULL;
+
+	root = new Node(1);
+	root->left = new Node(2);
+	root->left->left = new Node(4);
+	root->left->right = new Node(5);
+	root->right = new Node(3);
+	root->right->left = new Node(6);
+	root->right->right = new Node(7);
+	
+	int sum = 8;
+	dfs(root);
+	bool flag = false;
+	for(auto i : mp)
+		cout << i.first <<" -> " << i.second << "\n";
+	
+}
