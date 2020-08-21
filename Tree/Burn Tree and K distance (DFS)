@@ -1,0 +1,220 @@
+
+CONCEPT (Algorithm):
+
+1. Make a child-parent relationship as a Hashmap , hashmap stores it as key value pair.
+2. Take an adjacency List and push edges.
+3. Run a dfs from starting node and as soon as k becomes zero push it in vector.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q. Burn Tree
+
+//Radhe krishna ki jytoi alokik
+#include <bits/stdc++.h>
+using namespace std;
+
+
+vector<int> adj[1002];
+vector<int> v[1002];
+int vis[1002];
+
+class TreeNode {
+	public:
+		int data;
+		TreeNode *left, *right;
+		
+		TreeNode(int item)
+		{
+			data = item;
+			left = right = NULL;
+		}
+};
+
+map<TreeNode*, TreeNode*> mp;
+
+void addEdge(int u, int v)
+{
+	adj[u].push_back(v);
+	adj[v].push_back(u);
+}
+
+
+ void getParent(TreeNode *root)
+{
+      if(root==NULL)
+        return;
+      
+      queue<TreeNode*> mq;
+      mq.push(root);
+      
+      while(!mq.empty())
+      {
+        TreeNode *temp = mq.front();
+        mq.pop();
+        
+        if(temp == NULL)
+          mp[temp] = NULL;
+        
+        if(temp->left != NULL)
+        {
+          mp[temp->left] = temp;
+          mq.push(temp->left);
+        }
+        
+        if(temp->right != NULL)
+        {
+          mp[temp->right] = temp;
+          mq.push(temp->right);
+        }
+        
+      }
+}
+
+void dfs(vector<int> adj[], int node, int k)
+{
+	vis[node] = 1;
+	
+	v[k].push_back(node);
+	
+
+	for (int child : adj[node])
+	{
+		if (vis[child] == 0)
+		{
+			dfs(adj, child, k + 1);
+		}
+	}
+
+}
+
+int main()
+{
+
+       
+    TreeNode* root = new TreeNode(12); 
+    root->left = new TreeNode(19); 
+    root->right = new TreeNode(82); 
+  
+	root->left->left = new TreeNode(41);
+	root->left->left->right = new TreeNode(2);
+
+    root->right->left = new TreeNode(15); 
+    root->right->left->left = new TreeNode(21); 
+
+    root->right->right = new TreeNode(95); 
+    root->right->right->left = new TreeNode(7); 
+    root->right->right->right = new TreeNode(16); 
+
+	getParent(root);
+	
+	for(auto i : mp)
+		addEdge(i.first->data, i.second->data);
+		
+	int node = 41;
+	dfs(adj, node, 0);
+	
+	for(int i = 0; i < 1002; i++)
+	{
+		for(int j = 0; j < v[i].size(); j++)
+			cout << v[i][j] <<" ";
+		cout <<"\n";
+	}
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q. 863. All Nodes Distance K in Binary Tree
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    
+    int vis[1002];
+    
+    map<TreeNode* , TreeNode*> mp;
+    vector<int> v;
+    vector<int> adj[1002];
+  
+  
+    void getParent(TreeNode *root)
+    {
+      if(root==NULL)
+        return;
+      
+      queue<TreeNode*> mq;
+      mq.push(root);
+      
+      while(!mq.empty())
+      {
+        TreeNode *temp = mq.front();
+        mq.pop();
+        
+        if(temp == NULL)
+          mp[temp] = NULL;
+        
+        if(temp->left != NULL)
+        {
+          mp[temp->left] = temp;
+          mq.push(temp->left);
+        }
+        
+        if(temp->right != NULL)
+        {
+          mp[temp->right] = temp;
+          mq.push(temp->right);
+        }
+        
+      }
+    }
+  
+    void dfs(int node, int K)
+    {
+      
+      vis[node] = 1;
+      
+      if(K == 0)
+        v.push_back(node);
+            
+      for(int child : adj[node])
+      {
+        if(vis[child] == 0)
+          dfs(child, K - 1);
+      }
+    }
+  
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) 
+    {
+      if(root== NULL)
+        return v;
+      
+      getParent(root);
+      
+      // vector<vector<int>> adj;
+      
+      for(auto i : mp) {
+          adj[i.first->val].push_back(i.second->val);
+          adj[i.second->val].push_back(i.first->val);
+      }      
+      
+      dfs(target->val, K);
+      
+      return v;
+      
+    }
+};
+
+
+
+
+
+
