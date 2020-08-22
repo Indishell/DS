@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+Algorithm: 
+
+<b> /* 
+1. Concept is push the source node into the string, 
+2. Base case is when source is equal to destination , push that stirng into vector and return to previous recursive call
+
+3. Mark current node as visited in line 29.
+
+Now, for every node check all its adjacent edges, and those which are unvisited , make a recursive call and 
+pass the child as source to recursive function and also add the child into the stirng
+
+
+After all steps has been over for a particular node, Un visit that particular node, 
+so that we are able to also select other vertices which makes a different path from Source to Destination.
+*/ </b>
+vector<int> adj[100001];
+vector<string> v;
+int vis[100001];
+
+void addEdge(int a, int b)
+{
+	adj[a].push_back(b);
+	adj[b].push_back(a);
+}
+
+
+void dfs(vector<int> adj[], int src, int dest, string path)
+{
+	if(src == dest)
+	{
+		v.push_back(path);
+		return;
+	}
+	
+	vis[src] = 1;
+
+	for(int child : adj[src])
+	{
+		if(vis[child] ==0)
+			dfs(adj, child, dest, path + to_string(child));
+	}
+	
+	vis[src] = 0;
+}
+
+int main() 
+{	
+	
+	addEdge(0, 1);
+	addEdge(1, 2);
+	addEdge(2, 3);
+	addEdge(3, 0);
+	addEdge(3, 4);
+	addEdge(4, 5);
+	addEdge(5, 6);
+	addEdge(6, 4);
+	
+	int src = 0, dest = 4;
+	
+	string path = "";
+	
+	dfs(adj, src, dest, path + to_string(src));
+	
+	for(string i : v)
+		cout << i <<" ";
+	return 0;
+}
