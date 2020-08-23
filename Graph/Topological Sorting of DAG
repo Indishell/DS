@@ -1,60 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
 
-void Graph::  topologicalSort(int v, vector<int> &visited, stack<int> &ms)
-{
-  // Topoligcal sort start from the node which don't have any incoming edges coming to it.
-	// Topological sort is only for Directed Acylcic graph
-	// For every edge u->v, u must come before v
+vector<vector<int>> adj;
+int vis[10001];
 
-	visited[v] = true;
-
-	list<int> :: iterator i;
-	for (i = adj[v].begin(); i != adj[v].end();  i++)
+void dfs(vector<vector<int>> &adj, int node, stack<int> &ms) {
+	
+	vis[node] = 1;
+	
+	for(int child : adj[node])
 	{
-		if (!visited[*i])
-			topologicalSort(*i, visited, ms);
-
+	     if(!vis[child])
+			dfs(adj, child, ms);
 	}
-	ms.push(v);
-
+	ms.push(node);
 }
 
-
-int main()
+int main() 
 {
-
-#ifndef ONLINE_JUDGE
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
-#endif
-
-	Graph g(6);
-	g.addEdge(5, 2);
-	g.addEdge(5, 0);
-	g.addEdge(4, 0);
-	g.addEdge(4, 1);
-	g.addEdge(2, 3);
-	g.addEdge(3, 1);
-
-
-	vector<int> visited(6, false);
-	stack<int> ms;
-
-	for (int i = 0; i < 6; i++)
+	int n = 8;
+	adj.resize(n);
+	for(int i = 0;i < n; i++)
 	{
-		if (visited[i] == false)
-			g.topologicalSort(i, visited, ms);
+		int u, v;
+		cin >> u >> v;
+		
+		adj[u].push_back(v);
 	}
-
-	cout << "Calling topological Sort function :" << "\n";
-
-	while (!ms.empty())
+	
+	/*
+	0 1 
+	0 3
+	1 2
+	2 3
+	4 3
+	4 5
+	5 6
+	4 6	
+	*/
+	stack<int> ms;
+	for(int i = 0; i < n; i++) {
+		if(!vis[i])
+			dfs(adj, i, ms);
+	}
+	
+	while(!ms.empty())
 	{
-		cout << ms.top() << " ";
+		cout << ms.top() <<" ";
 		ms.pop();
 	}
-
+	
 	return 0;
 }
-
-
-
