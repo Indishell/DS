@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+bool isPrime(int n) {
+	
+	if(n <= 1) return false;
+		
+	if(n <= 3)	return true;
+	
+	if(n%2 == 0 || n%3 == 0)	return false;
+	
+	
+	for(int i = 5; i*i <= n; i += 6) {
+		if(n%i == 0 || n%(i + 2) == 0)
+			return false;
+	}
+	
+	return true;
+}
+
+int solve(int A[], int n ) {
+	
+	int cnt = 0, ans = 0;
+	
+	for(int i =0; i < n; i++) 
+	{
+		
+		if(isPrime(A[i]))
+			cnt += 1;	
+			
+		else
+		{
+			ans += (cnt*(cnt + 1))/2;
+			cnt = 0;
+		}
+	}
+	
+	ans += (cnt*(cnt + 1)/2);
+	
+	return ans;
+}
+
+int main() {
+	
+	int A[] = {2, 3, 4, 5, 7};
+	int n = sizeof(A)/sizeof(int);
+	
+	cout << solve(A, n) <<"\n";
+	return 0;
+}
