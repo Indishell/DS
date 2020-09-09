@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastIO ios_base::sync_with_stdio(false);cin.tie(NULL); cout.tie(NULL);
+#define ll long long
+#define pb push_back
+const ll MOD  = 1000000007;
+#define V 8
+
+vector<int> adj[V], rev[V];
+
+void DFS1(int node, vector<bool> &vis, stack<int> &mystack)
+{
+    vis[node] = true;
+    
+    
+    for(int children : adj[node])
+    {
+        if(!vis[children])
+            DFS1(children, vis, mystack);
+    }
+    
+    mystack.push(node);
+}
+
+void reverse() {
+    
+    for(int i=0; i<V; i++)
+    {
+        for(int j : adj[i])
+            rev[j].push_back(i);
+    }
+}
+
+
+void DFS2(int node, vector<bool> &vis)
+{
+    cout << node <<" ";
+    
+    vis[node] = true;
+    
+    for(int children : rev[node])
+    {
+        if(!vis[children])
+            DFS2(children, vis);
+    }
+}
+
+void findSSC()
+{
+    stack<int> mystack;
+    
+    vector<bool> vis(V,false);
+    
+    for(int i=0; i<V; i++)
+    {
+        if(!vis[i])
+            DFS1(i, vis, mystack);
+    }
+    reverse();
+    
+    for(int i=0; i<V; i++)
+        vis[i] = false;
+        
+    while(!mystack.empty())
+    {
+        int curr = mystack.top();
+        mystack.pop();
+        
+        if(vis[curr] == false)
+        {
+            DFS2(curr, vis);
+            cout << "\n";
+        }
+    }
+    
+}
+
+int main()
+{
+    adj[0].pb(1);
+	adj[1].pb(2);
+	adj[2].pb(0);
+	adj[2].pb(3);
+	adj[3].pb(4);
+	adj[4].pb(5);
+	adj[4].pb(7);
+	adj[5].pb(6);
+	adj[6].pb(4);
+	adj[6].pb(7);
+	
+	
+	findSSC();
+
+	return 0;
+
+}
