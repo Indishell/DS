@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+	public:
+		int data;
+		Node *left,*right;
+		
+		Node(int item) {
+			data = item;
+			left= right = NULL;
+		}
+};
+
+int solve(Node* root, int &res)
+{
+	if(root == NULL)
+		return 0;
+		
+	int leftsubtree  = solve(root->left, res);
+	int rightsubtree = solve(root->right,res);
+	
+	int temp = leftsubtree +  rightsubtree + root->data;
+	
+	res = max(res, temp);
+	return max(leftsubtree, rightsubtree) + root->data;
+}
+
+
+int main() {
+	
+	Node* root = new Node(10);
+	root->left = new Node(2);
+	root->left->left = new Node(20);
+	root->left->right = new Node(1);
+	root->right = new Node(-10);
+	root->right->right = new Node(-25);
+	root->right->right->left = new Node(3);
+	root->right->right->right = new Node(4);
+	
+    int res =0;
+    solve(root, res);
+    
+    cout << "Maximum Path sum from Leaf Node to Leaf Node is : " << res <<"\n";
+	return 0;
+}
