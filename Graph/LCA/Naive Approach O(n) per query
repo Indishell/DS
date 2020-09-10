@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+
+int level[100001];
+int vis[100001],vis1[100001];
+int par[100001];
+
+vector<int> adj[100001];
+
+void dfs(int node, int count)
+{
+	level[node] = count;
+	vis[node] = 1;
+	
+	for(int child : adj[node])
+	{
+		if(vis[child] == 0)
+			dfs(child, level[node] + 1);
+	}
+}
+
+void parent(int a, int b)
+{
+	par[a] = b;
+	vis1[a] =1;
+	
+	for(int child : adj[a])
+	{
+		if(vis1[child] == 0)
+			parent(child,a);
+	}
+}
+
+int lca(int a, int b)
+{
+	if(level[a] > level[b])	swap(a, b);
+	
+	int d = level[b] - level[a];
+	
+	while(d--){
+		b = par[b];
+	}
+	
+	if(a==b)
+		return a;
+		
+	while(par[a] != par[b])
+	{
+		a = par[a],b = par[b];
+	}
+	return par[a];
+}
+
+int main() 
+{
+	int v, e;
+	cin >> v >> e;
+	
+	for(int i = 0; i < v; i++)
+	{
+		int to, from;
+		cin >> to >> from;
+		
+		adj[to].pb(from), adj[from].pb(to);
+	}
+	
+	dfs(1, 0);
+	parent(1, -1);
+	
+	
+	cout << lca(6,9) <<"\n";
+	cout << lca(5,9) <<"\n";
+	cout << lca(6,8) <<"\n";
+	cout << lca(6,1) <<"\n";
+	cout << lca(5,11) <<"\n";
+	
+	return 0;
+}
