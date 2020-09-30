@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(string s)
+{
+	int n = s.size();
+	
+	int cost[n][n];
+	bool dp[n][n];
+	
+	for(int i=0; i<n; i++)
+	{
+		dp[i][i] = true;
+		cost[i][i] = 0;
+	}
+	
+	for(int gap = 2; gap <= n; gap++)
+	{
+		for(int i=0; i < n - gap + 1; i++)
+		{
+			int j = i + gap - 1;
+			
+			if(gap == 2)
+				dp[i][j] = (s[i] == s[j]);
+				
+			else
+				dp[i][j] = (s[i] == s[j] and dp[i + 1][j - 1]);
+				
+			if(dp[i][j])
+				cost[i][j] = 0;
+			else
+			{
+				int minm = INT_MAX;
+				
+				for(int k = i; k < j; k++)
+				{
+					int left = cost[i][k];
+					int right = cost[k + 1][j];
+					
+					if(minm > left + right + 1)
+						minm = left + right + 1;
+				}
+				cost[i][j] = minm;
+			}
+		}
+	}
+	
+	return cost[0][n - 1];
+}
+
+int main() 
+{
+	string s = "abbac";
+	cout << solve(s) << endl;
+	
+	return 0;
+}
