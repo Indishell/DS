@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+
+Make sure to revise
+
+If the constraint is telling there can be atmost 100 digits or any number of digits.
+
+my dp state is dp(N, sum_of_N_digit_numbers, 2)
+
+I am introducing a tight condition so that i never overflow the maximum number of R.
+
+I will recur all possible choices at each digit, if i reaches the end of the string and sum is zero, then i will just return 1 as it gives me one possible answer.
+
+I will recur for all possible choices from 0 to 9 , in case we have no tight bound.
+
+If we have tight bound the maximum we can place at digit is the number itself, if we place the smaller digit, then we have no tight condition then,
+If we place the number itself, then we do have the tight condition valid, as there is still a possibility that it will overflow my solution.
+*/
+
+int dp[101][181][2];
+
+int solve(string num, int n, int x, int tight) {
+	
+	if(n == 0) {
+		return (x == 0) ? 1 : 0;
+	}
+	
+	if(dp[n][x][tight] != -1)
+		return dp[n][x][tight];
+		
+	int answer = 0;
+	int ub = tight ? (num[num.length() - n] - '0') : 9;
+	
+	for(int i =0; i <= ub; i++)
+	{
+		answer += solve(num, n - 1,  x- i, tight & (i == ub) );
+	}
+	
+	return dp[n][x][tight] = answer;
+}
+
+int main() {
+	// your code goes here
+	
+	string L = "0", R = "11235";
+	memset(dp, -1, sizeof dp);
+	
+	cout << solve(R, R.length(), 5, 1);
+	return 0;
+}
