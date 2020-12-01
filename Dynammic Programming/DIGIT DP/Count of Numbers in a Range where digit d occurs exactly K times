@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int dp[11][2][11];
+
+int solve(string str, int pos, int tight, int cnt, int k, int d)
+{
+	if(pos == str.length())
+		return (cnt == k);
+		
+	if(dp[pos][tight][cnt] != -1) 
+		return dp[pos][tight][cnt];
+		
+	int ub = tight ? str[pos] - '0' : 9;
+	
+	int ans  = 0;
+	for(int i = 0; i <= ub; i++)
+	{
+    //checking how many times, this count have appeared. for a digit and if it a digit occurs k times, then we got our one result.
+		int count = cnt;
+		if(i == d)
+			count++;
+			
+		ans += solve(str, pos + 1, tight & (i == ub) , count, k, d);
+	}
+	
+	return dp[pos][tight][cnt]= ans;
+}
+
+int main() {
+	// your code goes here
+	
+	string R = "233";
+	memset(dp, -1, sizeof dp);
+	cout << solve(R, 0, 1, 0, 2, 3);
+	
+	return 0;
+}
