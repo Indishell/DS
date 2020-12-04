@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Segment Tree Basic Problems.
+
+void updateValueUtil(int *sgmt, int l, int r, int i, int diff, int pos)
+{
+	if(i < l  || i > r)
+		return;
+		
+	sgmt[pos] = sgmt[pos] + diff;
+	
+	if(l != r) {
+		
+		int mid = l + (r - l)/2;
+		updateValueUtil(sgmt, l, mid, i, diff, 2*pos + 1);
+		updateValueUtil(sgmt, mid + 1, r, i, diff, 2*pos + 2);
+	}
+}
+
+void updateValue(int arr[], int *sgmt, int n, int i, int val)
+{
+	if(i < 0 or i > n - 1)
+	{
+		cout << "Invalid input";
+		return;
+	}
+	
+	int diff = val - arr[i];
+	
+	arr[i] = val;
+	
+	updateValueUtil(sgmt, 0, n - 1, i, diff, 0); 
+}
+
+int constructSTUtil(int *sgmt, int pos, int arr[], int l, int r)
+{
+	// if there is one element in the segment tree.
+	if(l == r)
+	{
+		sgmt[pos] = arr[l];
+		return arr[l];
+	}
+	
+	int mid = l + (r- l)/2;
+	
+	sgmt[pos] = constructSTUtil(sgmt, 2*pos + 1, arr, l, mid) + constructSTUtil(sgmt, 2*pos + 2, arr, mid + 1, r);
+	
+	return sgmt[pos];
+}
+
+int getSumUtil(int *sgmt, int pos, int l, int r, int qs, int qe)
+{
+	if(qs <= l and qe >= r)
+		return sgmt[pos];
+		
+	
+	if(r < qs or l > qe)
+		return 0;
+	
+	int mid = l + (r - l)/2;
+	
+	return getSumUtil(sgmt, 2*pos + 1, l , mid, qs, qe) +
+	getSumUtil(sgmt, 2*pos + 2, mid + 1, r, qs, qe);
+}
+
+int *constructST(int arr[], int n) 
+{
+	int x = (int)(ceil(log2(n))); 
+
+	int max_size = 2*(int)pow(2, x) - 1; 
+
+	int *sgmt = new int[max_size];
+	
+	constructSTUtil(sgmt, 0, arr, 0, n - 1);
+	
+	return sgmt;
+}
+int main() 
+{
+	int arr[] = {1, 3, 5, 7, 9, 11}; 
+	int n = sizeof(arr)/sizeof(arr[0]);
+	
+	
+	int *sgmt = constructST(arr, n);
+	
+	cout<<"Sum of values in given range = "<<  getSumUtil(sgmt, 0, 0, n - 1, 1, 3) << endl;
+	
+	updateValue(arr, sgmt, n, 1, 10);
+	cout<<"Updated sum of values in given range = " <<getSumUtil(sgmt, 0, 0, n - 1, 1, 3)<<endl; 
+	
+	return 0;
+}
