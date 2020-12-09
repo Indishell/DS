@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int dp[172][19][2];
+
+bool check(int n)
+{
+    if (n <= 1)  return false; 
+  
+    // Check from 2 to n-1 
+    for (int i=2; i<n; i++) 
+        if (n%i == 0) 
+            return false; 
+  
+    return true; 
+}
+
+int go(string s, int sum, int pos, int tight)
+{
+	if (pos == s.length()) {
+
+		return ( check(sum) == true) ? 1 : 0;
+	}
+	
+	if(dp[sum][pos][tight] != -1)
+		return dp[sum][pos][tight];
+		
+	int ub = (tight) ? (s[pos] - '0') : 9;
+	int res = 0;
+	
+	for (int i = 0; i <= ub; i++)
+	{
+		res += go(s, sum + i, pos + 1, (tight & (ub == i)));
+	}
+	
+	return dp[sum][pos][tight] = res;
+}
+
+
+
+int solve(int L, int R)
+{
+	L--;
+	string l = to_string(L);
+	string r = to_string(R);
+	
+	memset(dp, -1, sizeof dp);
+	int cntR = go(r, 0, 0, 1);
+	
+	memset(dp, -1, sizeof dp);
+	int cntL = go(l, 0, 0, 1);
+	
+	return(cntR - cntL);
+}
+
+int main()
+{
+	int t;
+	cin >> t;
+	
+	while(t--)
+	{
+		int L, R;
+		cin >> L >> R;
+		
+		cout << solve(L, R) << endl;
+	}
+	
+	return 0;
+}
