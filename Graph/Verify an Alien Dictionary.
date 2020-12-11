@@ -1,0 +1,69 @@
+/*
+1. It wants ordering of characters. when ever we are talking about ordering we should think of topological sort.
+2. Take starting two words, if their corresponging char is not same , make a graph from char from string 1 to char from string 2.   that is (s[i][j]  ---> s[i + 1][j]).
+3. Make a map of char and boolean , and start traversing the loop from char 'a' to char 'z' and check for the following conditions.
+
+
+1. Whether a particular node is not marked true
+2. Whether a paricular char node exists in the adjacency list.
+
+If both these conditions exist, start a dfs from them and mark the char as visited ans traverse through its all the childrens. 
+and if a traversal is completed then at that node, push that char node in to the stack.
+
+Topo Sorting generally starts from the node which dont have any incoming edge.
+
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<char> adj[100];
+unordered_set<char> myset;
+
+stack<char> ms;
+map<char, bool> checker;
+
+void dfs(char node)
+{
+	checker[node] = true;
+	
+	for(auto child : adj[node])
+	{
+		if(checker[child] == false)
+			dfs(child);
+	}
+	
+	ms.push(node);
+}
+
+int main() 
+{
+	string s[] = {"baa", "abcd", "abca", "cab", "cad"};
+	int n = sizeof(s)/sizeof(s[0]);
+	
+	for(int i = 0; i < n - 1; i++)
+	{
+		for(int j = 0; j < min(s[i].length(), s[i + 1].length()); j++)
+		{
+			if(s[i][j] != s[i + 1][j]) {
+      
+				adj[s[i][j]].push_back(s[i + 1][j]);
+				myset.insert(s[i][j]);
+				myset.insert(s[i + 1][j]);
+				break;
+			}
+		}
+	}
+	for(char i = 'a'; i <= 'z'; i++)
+	{
+		if(checker[i] == false and myset.find(i) != myset.end())
+			dfs(i);
+	}
+	
+	while(ms.empty() == false)
+	{
+		cout << ms.top() <<" ";
+		ms.pop();
+	}
+	
+	return 0;
+}
