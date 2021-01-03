@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node {
+	
+	public:
+		int val;
+		Node *left, *right;
+		
+		Node(int item) {
+			val = item;
+			left = right = NULL;
+		}
+};
+
+/*
+
+Concept Create a queue
+
+1. Create a node prev = NULL;
+2. Start Traversing the tree like level order traversal
+3. If at the first check prev == NULL , make prev = current_node, and prev->left = NULL
+4. after this if prev != NULL , make prev->right = current_node, current_node->left = prev and now the prev is at current_node position
+*/
+
+Node* flatten(Node* root) {
+	if(root == NULL) {
+		return NULL;
+	}
+	
+	queue<Node*> mq;
+	mq.push(root);
+	Node *prev = NULL;
+	Node* tmp;
+	
+	while(!mq.empty()) {
+		
+		int size = mq.size();
+		
+		while(size--) {
+			
+			Node *temp = mq.front();
+			mq.pop();
+			
+			if(temp->left)
+				mq.push(temp->left);
+				
+			if(temp->right)
+				mq.push(temp->right);
+				
+			if(!prev) {
+				prev = temp;
+				tmp = prev;
+			} else {
+				prev->right = temp;
+				temp->left = prev;
+				prev = temp;
+			}
+		}
+	}
+	
+	return tmp;
+}
+
+void print(Node *root) {
+	
+	Node *curr = root;
+	while(curr != NULL) {
+		cout << curr->val <<" ";
+		curr = curr->right;
+	}
+}
+
+int main() {
+	
+	Node* root = new Node(1); 
+    root->left = new Node(5); 
+    root->right = new Node(2); 
+    root->left->left = new Node(6); 
+    root->left->right = new Node(4); 
+    root->right->left = new Node(9); 
+    root->right->right = new Node(3);
+    
+    Node* ki = flatten(root);
+    print(ki);
+    
+	return 0;
+}
