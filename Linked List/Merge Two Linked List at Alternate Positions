@@ -1,0 +1,117 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Parent Problem:
+1. Merge two linked list at alternate positions
+2. Merge two linked lists at odd - even -odd positions
+3. Merge two linked lists at perfectsquare - normal - perfect square numbers
+
+// 2->1->3->5->6->4->7->NULL
+
+
+odd : 1, 3, 5, 7
+even : 2, 6, 4
+
+1 -> 2 -> 3 -> 6 -> 5 -> 4 -> 7
+
+*/
+
+class Node {
+public:
+	int val;
+	Node *next;
+
+	Node(int item) {
+		val = item;
+		next = NULL;
+	}
+};
+
+void printList(Node *head) {
+
+	Node *temp = head;
+
+	while (temp != NULL)  {
+		cout << temp->val << " ";
+		temp = temp->next;
+	}
+}
+
+
+Node* mergeAlternatively(Node* A, Node* B) {
+
+	if (A == NULL) {
+		return B;
+	}
+
+	if (B == NULL) {
+		return A;
+	}
+	
+	Node *res = NULL;
+
+	int allowed = 1;
+
+	Node* ans;
+
+	while (A != NULL and B != NULL) {
+
+		if (allowed) {
+
+			if (res == NULL) {
+				res = A;
+				ans = res;
+				A = A->next;
+			}
+
+			else {
+				res->next = A;
+				res = res->next;
+				A = A->next;
+			}
+
+			allowed = 0;
+		}
+
+		else if(!allowed) {
+			res->next = B;
+			
+			res = res->next;
+			B = B->next;
+			
+			allowed = 1;
+		}
+	}
+	
+	while(A != NULL) {
+		res->next = A;
+		res = res->next;
+		A = A->next;
+	}
+	
+	while(B != NULL) {
+		res->next = B;
+		res = res->next;
+		B = B->next;
+	}
+
+	return ans;
+}
+
+
+int main() {
+	
+	Node* A = new Node(1);
+	A->next = new Node(3);
+	A->next->next = new Node(5);
+	A->next->next->next = new Node(7);
+
+	Node* B = new Node(2);
+	B->next = new Node(6);
+	B->next->next = new Node(4);
+	
+	Node* temp = mergeAlternatively(A, B);
+	printList(temp);
+	
+}
