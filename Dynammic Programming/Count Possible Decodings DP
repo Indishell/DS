@@ -1,0 +1,55 @@
+Count All Possible Decodings
+Follow Up : Print all possible Decodings
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+vector<string> ans;
+
+void solve(string str, int idx, string temp) {
+	
+	if(idx == str.length()) {
+		ans.push_back(temp);
+		return;
+	}
+	char ch = (str[idx] - '0') - 1 + 'a';
+	
+	
+	if(idx + 1 < str.length()) {
+		
+		if(str[idx] <= '2' and str[idx + 1] <= '6') {
+			
+			int n1 = (str[idx] - '0');
+			int n2 =  (str[idx + 1] - '0');
+			
+			int tmp = n1*10 + n2;
+			tmp--;
+			
+			char c = tmp + 'a';
+			// cout << c << endl;
+			string ch  = "";
+			ch += c;
+			
+			solve(str, idx + 2, temp + ch);
+			
+		} 
+		
+	}
+	
+	solve(str, idx + 1, temp + ch);
+}
+
+int main() {
+	
+	string str = "1234"; //lcd awd abcd 
+  
+	//solve(str, 0, "");
+	
+	// all possible encodings
+	for(string encoding : ans) {
+		cout << encoding << " ";
+	}
+	
+	return 0;
+}
