@@ -1,0 +1,95 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Node(int item) {
+// 		this->val = item;
+// 		this->next = NULL;
+// 		this->prev = NULL;
+// 	}
+		
+class Node {
+	public:
+		int val;
+		Node *next, *prev;
+};
+ 
+void print(Node *head) {
+ 
+	Node *curr = head;
+ 
+	while(curr) {
+		cout << curr->val <<" ";
+		curr = curr->next;
+	}
+	cout << endl;
+}
+
+void push(Node** head_ref, int new_data)
+{
+    Node* temp = new Node();
+    temp->val = new_data;
+    
+    temp->prev = NULL;
+ 
+    temp->next = (*head_ref);    
+    
+    if((*head_ref) != NULL)
+    	(*head_ref)->prev = temp ;
+    	
+    (*head_ref) = temp;
+}
+void reverse(Node **head) {
+	Node *prev = NULL;
+	
+	Node *curr = *head;
+	Node *saved = NULL;
+	
+	while(curr != NULL) {
+		
+		saved = curr->next;
+		
+		curr->next = prev;
+		prev = curr;
+		
+		curr = saved;
+	}
+	*head = prev;
+}
+void reverseDLL(Node **head) {
+	
+	if(*head == NULL or *(head->next) == NULL) {
+		return;
+	}
+	
+	Node *prev_node = NULL, *saved = NULL;
+	Node *curr = *head;
+	
+	while(curr) {
+		
+		saved = curr->next;
+		
+		curr->next = prev_node;
+		
+		if(curr != *head)
+			prev_node->prev = curr;
+		
+		prev_node = curr;
+		curr = saved;
+	}
+	*head = prev_node;
+}
+
+
+int main() {
+	
+	Node *head = NULL;
+	
+	push(&head, 2);
+	push(&head, 4);
+    push(&head, 8);
+    push(&head, 10);
+    
+	print(head);
+	
+	return 0;
+}
