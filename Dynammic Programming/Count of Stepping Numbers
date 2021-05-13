@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n = 4;
+int dp[5][10];
+
+int solve(int n, int last) {
+	
+	
+	if(n == 0) {
+		return 1;
+	}
+	
+	if(n < 0) {
+		return 0;
+	}
+	
+	if(dp[n][last] != -1) {
+		return dp[n][last];
+	}
+	
+	if(last == 0)  {
+		return solve(n - 1, last + 1);
+	}
+	
+	if(last == 9) {
+		return solve(n - 1, last - 1);
+	}
+	
+	int op_a = solve(n - 1, last + 1);
+	int op_b = solve(n - 1, last - 1);
+	
+	return dp[n][last] =  op_a + op_b;
+}
+
+int main() {
+	
+	int sum= 0;
+	
+	memset(dp, -1, sizeof dp);
+	
+	for(int i =  1; i <= 9; i++) {
+		sum += solve(n - 1,i);
+	}
+	
+	cout << sum << endl;
+	return 0;
+}
