@@ -34,5 +34,5 @@ bool isSubArray(int A[], int B[], int m, int n)
 }
 
 
-TC : O(n) => where n is number of elements in the array
-SC: O(n) => as we used auxiliary space for our set.
+//TC : O(n) => where n is number of elements in the array
+//SC: O(n) => as we used auxiliary space for our set.
