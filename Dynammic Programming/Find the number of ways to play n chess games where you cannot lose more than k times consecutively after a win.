@@ -1,0 +1,78 @@
+Find the number of ways to play n chess games where you cannot lose more than k times consecutively after a win.
+
+Example 1:
+n = 3,  k = 1
+Output: 7
+Explanation: L L L
+             L L W
+			 L W W
+			 W L W
+			 W W L
+			 L W L
+			 W W W
+
+Example 2:
+n = 5, k = 0
+Output: 6
+Explanation: L L L L L
+			 L L L L W
+	       	 L L L W W
+			 L L W W W
+			 L W W W W
+			 W W W W W
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int dp[1001][1001][2];
+
+int solve(int i, int k, int cnt, int res) {
+	
+	if(i == 0) {
+		return 1;
+	}
+	
+	if(dp[i][cnt][res] != -1) {
+		return dp[i][cnt][res];
+	}
+	
+	
+	// if our previous game is W
+	if(res) {
+		
+		// if our previous game is W, we can win this too
+			int opa = solve(i - 1, k, 0, 1); //put W here 
+			
+			// check if lost count cannot be more than 1
+			if(cnt + 1 <= k) {
+				opa += solve(i - 1, k, cnt + 1, 1);  //put L here
+			}
+			
+			return dp[i][cnt][res] = opa;
+		}
+		
+	// if res is 0
+	else {
+		
+		// if our previous game is L, we can put L here
+		int option_a = solve(i - 1, k, 0, 0);
+
+		// if our previous game is L, we can put W here
+		int option_b = solve(i - 1, k, 0, 1);
+		
+		return dp[i][cnt][res] =  option_a + option_b;
+	}
+		
+}
+
+int main() {
+	
+	int n,k;
+	cin >> n >> k;
+	
+	memset(dp,-1,sizeof dp);
+	cout << solve(n, k,0, 0);
+	
+	return 0;
+}
